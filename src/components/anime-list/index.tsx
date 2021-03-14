@@ -37,9 +37,10 @@ const AnimeList = ({ dataFromFirebase }: AnimeGraphProps) => {
             return (
               <LinkChakra key={anime.mal_id} mb={12} href={(`/animes/${anime.mal_id}`)}>
                 <Flex h="full" position="relative" w="135px" key={anime.mal_id}>
-                  <img style={{ width: "135px",height:"auto" }} src={anime.image_url} />
-
-                  <Box bottom={-30} p={2} w="full" shadow="lg" bg="white" position="absolute"><Stat fontWeight="bold">
+                  <Box roundedTop="lg" overflow="hidden">
+                    <img style={{ width: "135px", height: "auto" }} src={anime.image_url} />
+                  </Box>
+                  <Box roundedBottom="lg" bottom={-30} p={2} w="full" shadow="lg" bg="white" position="absolute"><Stat fontWeight="bold">
                     <StatNumber>{anime.score} / 10</StatNumber>
                     <StatHelpText>{anime.members}人視聴</StatHelpText>
                   </Stat>
