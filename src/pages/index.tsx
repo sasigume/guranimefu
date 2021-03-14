@@ -55,7 +55,6 @@ const AnimesPage = ({ fetchedData, fetchedTime, lastGSP, revalEnv }: AnimesPageP
           <Box>FAILED TO FETCH DATA</Box>
         )}
       </Box>
-      <Divider my={8} />
       <Text mb={8}>
         Built with <Code>Next.js</Code> + <Code>chakra-ui</Code> + <Code>firebase</Code> + <Code>nivo</Code> +{' '}
         <Code>typescript</Code>.
