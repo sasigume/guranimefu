@@ -27,6 +27,17 @@ const NivoLine = (props: GraphProps) => {
         xFormat="time:%Y-%m-%d"
         yScale={{ type: 'linear', min: 'auto', max: 'auto', reverse: false }}
         //yFormat=" >-.2f"
+        tooltip={(pointObj: any) => {
+          console.log(pointObj)
+          return(
+          <Box bg="white" p={1} shadow="lg">
+            <strong>
+              {pointObj.point.serieId}<br />
+              {pointObj.point.data.xFormatted} : {pointObj.point.data.yFormatted}
+            </strong>
+          </Box>
+          )
+        }}
         axisTop={{
           orient: 'top',
           tickSize: 5,
