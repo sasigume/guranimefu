@@ -1,3 +1,4 @@
+import LinkChakra from '@/components/common/link-chakra'
 import { Subtype } from '@/models/index'
 import { graphData } from "@/models/index"
 import { Box } from "@chakra-ui/react"
@@ -69,8 +70,7 @@ const NivoBump = (props: GraphProps) => {
           format: function (value: string) {
             return `${value}位`
           },
-        }}
-        
+        }}     
       />
     </Box>
   )

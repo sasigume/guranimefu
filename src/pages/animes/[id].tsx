@@ -38,7 +38,7 @@ const AnimeIDPage = ({ anime, fetchedTime, lastGSP, revalEnv }: AnimeIDPageProps
 
     return (<>
       <Layout
-        title={anime.title_japanese} desc={anime.title_japanese + 'の詳細情報'} debugInfo={
+        title={anime.title_japanese + 'の詳細情報'} desc={anime.title_japanese + 'の詳細情報'} debugInfo={
           {
             lastGSP: lastGSP,
             lastFetched: fetchedTime,
@@ -51,35 +51,10 @@ const AnimeIDPage = ({ anime, fetchedTime, lastGSP, revalEnv }: AnimeIDPageProps
 
               <AnimeSingle anime={animeConvertedForSingle} />
 
-              <Divider my={12} />
             </>) : (
             <Box>FAILED TO FETCH DATA</Box>
           )}
         </Box>
-        <Text mb={8}>
-          Built with <Code>Next.js</Code> + <Code>chakra-ui</Code> + <Code>firebase</Code> + <Code>nivo</Code> +{' '}
-          <Code>typescript</Code>.
-        </Text>
-
-        <List spacing={3} my={0}>
-          <ListItem>
-            <ListIcon as={CheckCircleIcon} color="green.500" />
-            <ChakraLink
-              isExternal
-              href="https://chakra-ui.com"
-              flexGrow={1}
-              mr={2}
-            >
-              Chakra UI <LinkIcon />
-            </ChakraLink>
-          </ListItem>
-          <ListItem>
-            <ListIcon as={CheckCircleIcon} color="green.500" />
-            <ChakraLink isExternal href="https://nextjs.org" flexGrow={1} mr={2}>
-              Next.js <LinkIcon />
-            </ChakraLink>
-          </ListItem>
-        </List>
       </Layout>
     </>
     )

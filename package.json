@@ -1,6 +1,6 @@
 {
-  "name": "animegurafu",
-  "version": "0.4.3",
+  "name": "guranimefu",
+  "version": "0.4.6",
   "scripts": {
     "dev": "next",
     "build": "next build",

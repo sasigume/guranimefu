@@ -69,7 +69,7 @@ export const Layout = ({ title, desc, children, debugInfo, isIndex }: LayoutProp
 
       <Flex w="full" as="footer" pt={8} pb={20}>
         <Container>
-          <Box>Distributed under MIT Lisence. The site owner do not own these anime stats.</Box>
+          <Box>Code of the app is distributed under MIT Lisence. The site owner do not own these anime stats or images.</Box>
         </Container>
       </Flex>
     </Box>

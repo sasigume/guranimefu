@@ -16,23 +16,20 @@ const SingleAnimeGraph = ({ anime }: Props) => {
     return <Box>DATA IS INVALID</Box>
   } else {
 
-    
+
 
     return (
       <Box style={{ maxWidth: "100vw" }} overflowX="scroll">
-        <Box fontSize="1rem">※JikanAPIが1日データをキャッシュするので、取得タイミングのせいでグラフが平らになっているかもしれません。</Box>
-        <Divider my={8} />
         <Tabs>
           <TabList>
-            <Tab fontSize="2rem">スコア順</Tab>
-            <Tab fontSize="2rem">メンバー数順</Tab>
+            <Tab fontSize="2rem">スコア</Tab>
+            <Tab fontSize="2rem">メンバー数</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
-              <Box fontSize="1.8rem">スコア順</Box>
+              <Box fontSize="1.8rem">スコア</Box>
               <>
-                <Box w={length * 250} h="container.xl" position="static">
-                  <Box fontSize="1.8rem">数値推移</Box>
+                <Box w={length * 50} h="container.xl" position="static">
                   <NivoLine gds={anime.gdsForLineScore} mode="byscore" />
                 </Box>
                 <Divider my={16} />
@@ -40,11 +37,10 @@ const SingleAnimeGraph = ({ anime }: Props) => {
 
             </TabPanel>
             <TabPanel>
-              <Box fontSize="1.8rem">メンバー数順</Box>
+              <Box fontSize="1.8rem">メンバー数</Box>
 
               <>
-                <Box w={length * 250} h="container.xl" position="static">
-                  <Box fontSize="1.6rem">数値推移</Box>
+                <Box w={length * 50} h="container.xl" position="static">
                   <NivoLine gds={anime.gdsForLinePop} mode="bypopularity" />
                 </Box>
               </>
