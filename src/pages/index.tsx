@@ -1,23 +1,15 @@
 import { GetStaticProps } from 'next'
 import {
-  Link as ChakraLink,
-  Text,
-  Code,
-  List,
-  ListIcon,
-  ListItem,
   Box,
   Divider,
 } from '@chakra-ui/react'
-import { CheckCircleIcon, LinkIcon } from '@chakra-ui/icons'
-import Head from 'next/head'
+
 import { Layout } from '@/components/layout'
 
 import { FetchedData } from '@/models/index'
 import AnimeList from '@/components/anime-list'
 import { SITE_NAME, SITE_DESC } from '@/lib/constants'
 import publishSitemap from '@/lib/sitemap'
-import ConvertForSingle from '@/lib/converter/for-single'
 import ConvertForList from '@/lib/converter/for-list'
 import MultipleGraph from '@/components/anime-graph/multiple-animes'
 
@@ -40,16 +32,6 @@ const AnimesPage = ({ fetchedData, fetchedTime, lastGSP, revalEnv }: AnimesPageP
       }
     }>
 
-      <Box fontSize="1.7rem" mb={2}>{SITE_DESC}</Box>
-      <Box fontSize="1rem" mb={4}>
-        生成方法は以下の通りです。
-        <List listStyleType="decimal" ml={6}>
-          <ListItem>Jikan APIから6時間おきにデータ取得</ListItem>
-          <ListItem>Firestoreに日付と一緒にデータを保存</ListItem>
-          <ListItem>Next.jsのISRで一定期間ごとにページを再生性</ListItem>
-          <ListItem>Nivoを使ってグラフ化して表示</ListItem>
-        </List>
-      </Box>
       <Box>
         {(fetchedData.animesByScore && fetchedData.animesByPopularity) ? (
           <>

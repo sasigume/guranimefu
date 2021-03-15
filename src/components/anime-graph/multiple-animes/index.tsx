@@ -29,7 +29,6 @@ const MultipleGraph = ({ dataFromFirebase }: AnimeGraphProps) => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <Box fontSize="1.8rem">スコア順</Box>
               <>
                 <Box w={length * 80} h="container.xl" position="static">
                   <Box fontSize="1.6rem">順位推移</Box>
@@ -49,7 +48,6 @@ const MultipleGraph = ({ dataFromFirebase }: AnimeGraphProps) => {
 
             </TabPanel>
             <TabPanel>
-              <Box fontSize="1.8rem">メンバー数順</Box>
 
               <>
                 <Box w={length * 80} h="container.xl" position="static">
