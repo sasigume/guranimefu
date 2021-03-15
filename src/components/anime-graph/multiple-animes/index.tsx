@@ -72,11 +72,11 @@ const MultipleGraph = ({ dataFromFirebase }: AnimeGraphProps) => {
         </Tabs>
         <Divider my={8} />
         <Box fontSize="1rem">※JikanAPIが1日データをキャッシュするので、取得タイミングのせいでグラフが平らになっているかもしれません。</Box>
-        <Box fontSize="1rem">※同じタイトルでも期が別なら分裂します。</Box>
+        <Box fontSize="1rem">※同じタイトルでも期が別なら分裂します。(蟲師続章は分裂してる)</Box>
         <Box bg="gray.200" p={6} m={6} rounded="xl">
-          <Box fontSize="1.3rem" fontWeight="bold">IGNORED DATA: {dataForGraph.ignoredDates.join(' ')}</Box>
-          <Box>Length: {length}</Box>
-          <Box fontSize="1rem">Fetched: {(`${dataFromFirebase.lastFetched}`)}</Box>
+          <Box fontSize="1.3rem" fontWeight="bold">バグってるので無視したデータ: {dataForGraph.ignoredDates.join(' ')}</Box>
+          <Box>集計日数: {length}</Box>
+          <Box fontSize="1rem">最終グラフ生成日時: {(`${dataFromFirebase.lastFetched}`)}</Box>
         </Box>
       </Box>
     )
