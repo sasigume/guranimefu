@@ -40,6 +40,16 @@ const AnimesPage = ({ fetchedData, fetchedTime, lastGSP, revalEnv }: AnimesPageP
       }
     }>
 
+      <Box fontSize="1.7rem" mb={2}>{SITE_DESC}</Box>
+      <Box fontSize="1rem" mb={4}>
+        生成方法は以下の通りです。
+        <List listStyleType="decimal" ml={6}>
+          <ListItem>Jikan APIから6時間おきにデータ取得</ListItem>
+          <ListItem>Firestoreに日付と一緒にデータを保存</ListItem>
+          <ListItem>Next.jsのISRで一定期間ごとにページを再生性</ListItem>
+          <ListItem>Nivoを使ってグラフ化して表示</ListItem>
+        </List>
+      </Box>
       <Box>
         {(fetchedData.animesByScore && fetchedData.animesByPopularity) ? (
           <>
@@ -55,10 +65,6 @@ const AnimesPage = ({ fetchedData, fetchedTime, lastGSP, revalEnv }: AnimesPageP
           <Box>FAILED TO FETCH DATA</Box>
         )}
       </Box>
-      <Text mb={8}>
-        Built with <Code>Next.js</Code> + <Code>chakra-ui</Code> + <Code>firebase</Code> + <Code>nivo</Code> +{' '}
-        <Code>typescript</Code>.
-      </Text>
 
       <List spacing={3} my={0}>
         <ListItem>

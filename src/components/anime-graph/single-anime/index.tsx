@@ -31,7 +31,7 @@ const SingleAnimeGraph = ({ anime }: Props) => {
             <TabPanel>
               <Box fontSize="1.8rem">スコア順</Box>
               <>
-                <Box w={length * 250} h="container.xl" position="static">
+                <Box w={length * 50} h="container.xl" position="static">
                   <Box fontSize="1.8rem">数値推移</Box>
                   <NivoLine gds={anime.gdsForLineScore} mode="byscore" />
                 </Box>
@@ -43,7 +43,7 @@ const SingleAnimeGraph = ({ anime }: Props) => {
               <Box fontSize="1.8rem">メンバー数順</Box>
 
               <>
-                <Box w={length * 250} h="container.xl" position="static">
+                <Box w={length * 50} h="container.xl" position="static">
                   <Box fontSize="1.6rem">数値推移</Box>
                   <NivoLine gds={anime.gdsForLinePop} mode="bypopularity" />
                 </Box>
