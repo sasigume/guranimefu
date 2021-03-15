@@ -18,6 +18,6 @@ export const CONST_REPO_URL = REPO_URL
 
 // CONSTANTS
 
-export const SITE_NAME = "animegurafu (アニメグラフ)"
+export const SITE_NAME = "guranimefu (グラニメフ)"
 
 export const SITE_DESC = "アニメの10段階評価と視聴者数を、海外(MyAnimeList)から毎日取得。順位と数値をグラフ化します。"
