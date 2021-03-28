@@ -1,15 +1,21 @@
-import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document'
-import React from 'react'
+import Document, {
+  DocumentContext,
+  Head,
+  Html,
+  Main,
+  NextScript,
+} from "next/document";
+import React from "react";
 
-import { GA_TRACKING_ID } from '@/lib/gtag'
+import { GA_TRACKING_ID } from "@/lib/gtag";
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
-    const initialProps = await Document.getInitialProps(ctx)
+    const initialProps = await Document.getInitialProps(ctx);
 
     return {
       ...initialProps,
-    }
+    };
   }
 
   render() {
@@ -38,6 +44,6 @@ export default class MyDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
