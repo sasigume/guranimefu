@@ -13,6 +13,9 @@ module.exports = {
     FIRESTORE_LIMIT: process.env.FIRESTORE_LIMIT,
     BROKEN_DATA: process.env.BROKEN_DATA,
     REVALIDATE: process.env.REVALIDATE,
-    GA_TRACKING_ID: process.env.GA_TRACKING_ID
+    GA_TRACKING_ID: process.env.GA_TRACKING_ID,
+    VERCEL_GIT_REPO_OWNER: process.env.VERCEL_GIT_REPO_OWNER,
+    VERCEL_GIT_REPO_SLUG=process.env.VERCEL_GIT_REPO_SLUG,
+    VERCEL_GIT_COMMIT_REF:process.env.VERCEL_GIT_COMMIT_REF
   }
 }
