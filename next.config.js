@@ -15,7 +15,7 @@ module.exports = {
     REVALIDATE: process.env.REVALIDATE,
     GA_TRACKING_ID: process.env.GA_TRACKING_ID,
     VERCEL_GIT_REPO_OWNER: process.env.VERCEL_GIT_REPO_OWNER,
-    VERCEL_GIT_REPO_SLUG=process.env.VERCEL_GIT_REPO_SLUG,
-    VERCEL_GIT_COMMIT_REF:process.env.VERCEL_GIT_COMMIT_REF
-  }
-}
+    VERCEL_GIT_REPO_SLUG: process.env.VERCEL_GIT_REPO_SLUG,
+    VERCEL_GIT_COMMIT_REF: process.env.VERCEL_GIT_COMMIT_REF,
+  },
+};
