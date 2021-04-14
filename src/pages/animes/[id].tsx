@@ -67,10 +67,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
   let mal_id;
   context.params ? (mal_id = context.params.id) : (mal_id = null);
 
-  const secret = process.env.PAGES_MAL_API_SECRET;
-
-  const apiResult = await fetch(
-    process.env.API_URL + `/api/mal/${mal_id}?secret=${secret}&mode=byscore`
+  const apiResult: AnimeForGraph = await fetch(
+    process.env.API_URL + `/getById?mal_id=${mal_id}`,
+    {
+      headers: {
+        authorization: process.env.FUNCTION_AUTH ?? "",
+      },
+    }
   )
     .then((res) => {
       return res.json();
@@ -90,11 +93,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export async function getStaticPaths() {
-  const secret = process.env.PAGES_MAL_API_SECRET;
-
-  const apiResult: FetchedData = await fetch(
-    process.env.API_URL + `/api/mal/getall/?secret=${secret}`
-  )
+  const apiResult: FetchedData = await fetch(process.env.API_URL + `/getAll`, {
+    headers: {
+      authorization: process.env.FUNCTION_AUTH ?? "",
+    },
+  })
     .then((res) => {
       return res.json();
     })

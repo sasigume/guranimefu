@@ -58,11 +58,11 @@ const AnimesPage = ({
 export default AnimesPage;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const secret = process.env.PAGES_MAL_API_SECRET;
-
-  const apiResult = await fetch(
-    process.env.API_URL + `/api/mal/getall/?secret=${secret}`
-  )
+  const apiResult = await fetch(process.env.API_URL + `/getAll`, {
+    headers: {
+      authorization: process.env.FUNCTION_AUTH ?? "",
+    },
+  })
     .then((res) => {
       return res.json();
     })
