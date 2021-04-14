@@ -58,7 +58,7 @@ const AnimesPage = ({
 export default AnimesPage;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const apiResult = await fetch(process.env.API_URL + `/getAll`, {
+  const apiResult = await fetch(process.env.API_URL + `/vercelapp-getAll`, {
     headers: {
       authorization: process.env.FUNCTION_AUTH ?? "",
     },

@@ -68,7 +68,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   context.params ? (mal_id = context.params.id) : (mal_id = null);
 
   const apiResult: AnimeForGraph = await fetch(
-    process.env.API_URL + `/getById?mal_id=${mal_id}`,
+    process.env.API_URL + `/vercelapp-getById?mal_id=${mal_id}`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",
@@ -93,11 +93,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export async function getStaticPaths() {
-  const apiResult: FetchedData = await fetch(process.env.API_URL + `/getAll`, {
-    headers: {
-      authorization: process.env.FUNCTION_AUTH ?? "",
-    },
-  })
+  const apiResult: FetchedData = await fetch(
+    process.env.API_URL + `/vercelapp-getAll`,
+    {
+      headers: {
+        authorization: process.env.FUNCTION_AUTH ?? "",
+      },
+    }
+  )
     .then((res) => {
       return res.json();
     })
