@@ -4,12 +4,15 @@ import { ConvertedForMultiGraph } from "@/models/index";
 import {
   Box,
   Divider,
+  Flex,
+  LayoutProps,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
+import { ReactNode, useEffect, useRef } from "react";
 import NivoBump from "../nivo/nivo-bump";
 import NivoLine from "../nivo/nivo-line";
 
@@ -24,11 +27,44 @@ const MultipleGraph = ({ dataFromFirebase }: AnimeGraphProps) => {
 
   let length = dataForGraph.sampleLength;
 
+  const GraphWrapper = ({
+    children,
+    title,
+    h,
+  }: {
+    children: ReactNode;
+    title: string;
+    h?: LayoutProps["h"];
+  }) => {
+    const endRef = useRef<HTMLDivElement>(null);
+    const scrollToButtom = () => {
+      endRef.current?.scrollIntoView();
+    };
+    useEffect(() => {
+      scrollToButtom();
+    }, [dataForGraph]);
+    return (
+      <Box w="full">
+        <Box fontSize="1.6rem" mb={4}>
+          {title}
+        </Box>
+
+        <Flex w="full" overflowX="scroll" h={h ?? "container.xl"}>
+          {/* グラフの右にrefがあり、自動でスクロールする */}
+          <Box minW={length * 70}>{children}</Box>
+          <div ref={endRef} />
+        </Flex>
+
+        <Divider my={8} />
+      </Box>
+    );
+  };
+
   if (!dataForGraph.byScore || !dataForGraph.byPopularity) {
     return <Box>DATA IS INVALID</Box>;
   } else {
     return (
-      <Box id="a_graph" style={{ maxWidth: "100vw" }} overflowX="scroll">
+      <Box id="a_graph" w="full">
         <Tabs>
           <TabList>
             <Tab fontSize="1.8rem">スコア順</Tab>
@@ -36,51 +72,41 @@ const MultipleGraph = ({ dataFromFirebase }: AnimeGraphProps) => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <>
-                <Box w={length * 80} h="container.xl" position="static">
-                  <Box fontSize="1.6rem">順位推移</Box>
+              <GraphWrapper title="順位推移">
+                <NivoBump
+                  gds={dataForGraph.byScore.gdsForBump}
+                  mode="byscore"
+                />
+              </GraphWrapper>
 
-                  <NivoBump
-                    gds={dataForGraph.byScore.gdsForBump}
-                    mode="byscore"
-                  />
-                </Box>
-                <Divider my={8} />
-              </>
+              <GraphWrapper title="順位推移">
+                <NivoBump
+                  gds={dataForGraph.byScore.gdsForBump}
+                  mode="byscore"
+                />
+              </GraphWrapper>
 
-              <>
-                <Box w={length * 80} h="3000px" position="static">
-                  <Box fontSize="1.8rem">数値推移</Box>
-                  <NivoLine
-                    gds={dataForGraph.byScore.gdsForLine}
-                    mode="byscore"
-                  />
-                </Box>
-                <Divider my={16} />
-              </>
+              <GraphWrapper title="数値順位">
+                <NivoLine
+                  gds={dataForGraph.byScore.gdsForLine}
+                  mode="byscore"
+                />
+              </GraphWrapper>
             </TabPanel>
             <TabPanel>
-              <>
-                <Box w={length * 80} h="container.xl" position="static">
-                  <Box fontSize="1.6rem">順位推移</Box>
+              <GraphWrapper title="順位推移">
+                <NivoBump
+                  gds={dataForGraph.byPopularity.gdsForBump}
+                  mode="bypopularity"
+                />
+              </GraphWrapper>
 
-                  <NivoBump
-                    gds={dataForGraph.byPopularity.gdsForBump}
-                    mode="bypopularity"
-                  />
-                </Box>
-                <Divider my={8} />
-              </>
-
-              <>
-                <Box w={length * 80} h="3000px" position="static">
-                  <Box fontSize="1.6rem">数値推移</Box>
-                  <NivoLine
-                    gds={dataForGraph.byPopularity.gdsForLine}
-                    mode="bypopularity"
-                  />
-                </Box>
-              </>
+              <GraphWrapper title="数値推移">
+                <NivoLine
+                  gds={dataForGraph.byPopularity.gdsForLine}
+                  mode="bypopularity"
+                />
+              </GraphWrapper>
             </TabPanel>
           </TabPanels>
         </Tabs>
