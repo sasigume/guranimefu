@@ -119,12 +119,21 @@ export interface AnimeForGraphWithLastFetched extends AnimeForGraph {
 }
 
 export interface AnimeForSingle extends AnimeForGraph {
+  description: string;
   // BUMP graph doesn't make sense for single anime
   gdsForLinePop: graphData[];
   gdsForLineScore: graphData[];
 }
 
 export interface PreConvert {
+  lastFetched: string;
   animesByPopularity: AnimeForGraph[];
   animesByScore: AnimeForGraph[];
+}
+
+export interface AnimeForRss {
+  lastFetched: string;
+  mal_id: string;
+  title: string;
+  description: string;
 }

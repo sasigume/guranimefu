@@ -5,6 +5,7 @@ import getAll from './getAll';
 import getConverted from './getConverted';
 import getById from './getById';
 import getByIdConverted from './getByIdConverted';
+import getRss from './getRss';
 import updateFirestore from './updateFirestore';
 
 const runtimeOpts = {
@@ -17,6 +18,7 @@ exports.getById = getById;
 // getConvertedはv0.6.0以降用
 exports.getConverted = getConverted;
 exports.getByIdConverted = getByIdConverted;
+exports.getRss = getRss;
 
 exports.updateFirestore = functions
   .runWith(runtimeOpts)

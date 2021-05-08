@@ -3,11 +3,7 @@ import ErrorPage from "next/error";
 import { Box } from "@chakra-ui/react";
 
 import { Layout } from "@/components/layout";
-import {
-  AnimeForGraph,
-  AnimeForSingle,
-  ConvertedForMultiGraph,
-} from "@/models/index";
+import { AnimeForRss, AnimeForSingle } from "@/models/index";
 import AnimeSingle from "@/components/anime-single";
 
 interface AnimeIDPageProps {
@@ -28,7 +24,7 @@ const AnimeIDPage = ({
       <>
         <Layout
           title={anime.title_japanese + "の詳細情報"}
-          desc={anime.title_japanese + "の詳細情報"}
+          desc={anime.description ?? anime.title_japanese + "の詳細情報"}
           debugInfo={{
             lastGSP: lastGSP,
             lastFetched: fetchedTime,
@@ -91,8 +87,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export async function getStaticPaths() {
-  const apiResult: ConvertedForMultiGraph = await fetch(
-    process.env.API_URL + `/vercelapp-getConverted`,
+  const apiResult: AnimeForRss[] = await fetch(
+    process.env.API_URL + `/vercelapp-getRss`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",
@@ -104,8 +100,8 @@ export async function getStaticPaths() {
     })
     .catch((e) => console.error(e));
 
-  const paths = apiResult.allAnimes.map(
-    (anime: AnimeForGraph) => `/animes/${anime.mal_id}`
+  const paths = apiResult.map(
+    (anime: AnimeForRss) => `/animes/${anime.mal_id}`
   );
   return {
     paths: paths,

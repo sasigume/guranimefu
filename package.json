@@ -1,6 +1,6 @@
 {
   "name": "guranimefu",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "scripts": {
     "dev": "next",
     "build": "next build",
@@ -21,7 +21,8 @@
     "framer-motion": "^3.5.2",
     "next": "latest",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "rss": "^1.2.2"
   },
   "devDependencies": {
     "@types/node": "^14.6.0",

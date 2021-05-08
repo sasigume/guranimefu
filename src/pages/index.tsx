@@ -6,7 +6,6 @@ import { Layout } from "@/components/layout";
 import { ConvertedForMultiGraph } from "@/models/index";
 import AnimeList from "@/components/anime-list";
 import { SITE_NAME, SITE_DESC } from "@/lib/constants";
-import publishSitemap from "@/lib/sitemap";
 import MultipleGraph from "@/components/anime-graph/multiple-animes";
 
 interface AnimesPageProps {
@@ -69,8 +68,6 @@ export const getStaticProps: GetStaticProps = async () => {
       return res.json();
     })
     .catch((e) => console.error(e));
-
-  publishSitemap(apiResult.allAnimes ?? []);
 
   let revalEnv = parseInt(process.env.REVALIDATE ?? "1800");
   return {

@@ -18,6 +18,7 @@ const ConvertForSingle: Converter = (anime: AnimeForGraph) => {
     cacheTtlOfRanking: anime.cacheTtlOfRanking,
     lastUpdateEnv: anime.lastUpdateEnv,
     lastUpdateTime: anime.lastUpdateTime,
+    description: `MyAnimeListで${anime.rankOfPopularity}位の人気を誇るアニメの視聴者数・評価をグラフ化。現在${anime.members}人が視聴済み。`,
     //updateTimeArray: anime.updateTimeArray,
     mal_id: anime.mal_id,
     title: anime.title,
