@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /animeCollection/{document=**} {
+      allow get, update, write, create, read, delete: if true;
+    }
+    match /animeCollection_backup/{document=**} {
+      allow get, update, write, create, read, delete: if true;
+    }
+  }
+}
