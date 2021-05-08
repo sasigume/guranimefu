@@ -1,22 +1,17 @@
-import { AnimeForGraph, AnimeForSingle, graphData } from '@/models/index'
-import { GraphDatasForLine } from './graph-data-parser'
+import { AnimeForGraph, AnimeForSingle } from '../../models/mal';
+import { GraphDatasForLine } from './graph-data-parser';
 
-type Converter = (anime: AnimeForGraph) => any
+type Converter = (anime: AnimeForGraph) => AnimeForSingle;
 
 const ConvertForSingle: Converter = (anime: AnimeForGraph) => {
-
-  const gdsForLineScore = GraphDatasForLine(
-    {
-      animes: [anime],
-      mode: "byscore",
-    }
-  )
-  const gdsForLinePop = GraphDatasForLine(
-    {
-      animes: [anime],
-      mode: "bypopularity",
-    }
-  )
+  const gdsForLineScore = GraphDatasForLine({
+    animes: [anime],
+    mode: 'byscore',
+  });
+  const gdsForLinePop = GraphDatasForLine({
+    animes: [anime],
+    mode: 'bypopularity',
+  });
 
   return {
     color: anime.color,
@@ -44,7 +39,7 @@ const ConvertForSingle: Converter = (anime: AnimeForGraph) => {
     rankOfPopularityArray: anime.rankOfPopularityArray,
     gdsForLinePop: gdsForLinePop,
     gdsForLineScore: gdsForLineScore,
-  } as AnimeForSingle
-}
+  } as AnimeForSingle;
+};
 
-export default ConvertForSingle
+export default ConvertForSingle;

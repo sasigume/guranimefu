@@ -68,9 +68,3 @@ export interface AnimeForSingle extends AnimeForGraph {
   gdsForLinePop: graphData[];
   gdsForLineScore: graphData[];
 }
-
-export interface FetchedData {
-  lastFetched: Date | string | void;
-  animesByPopularity: AnimeForGraph[] | Void;
-  animesByScore: AnimeForGraph[] | Void;
-}

@@ -1,6 +1,5 @@
-import { AnimeForGraph, NumberOfDate, Subtype } from "@/models/index";
-import { graphData, Pos } from "@/models/index";
-import dayjs from "dayjs";
+import { AnimeForGraph, NumberOfDate, Subtype, graphData, Pos } from '../../models/mal';
+import dayjs from 'dayjs';
 
 // Conver data into the structure shown below URL
 // https://nivo.rocks/bump/
@@ -23,7 +22,7 @@ const optimizePos = (posArray: Pos[]) => {
       ? -1
       : dayjs(b.x).toDate() > dayjs(a.x).toDate()
       ? 1
-      : 0
+      : 0,
   );
 };
 
@@ -34,12 +33,12 @@ interface GDProps {
 
 type ReturnGD = ({ animes, mode }: GDProps) => graphData[];
 
-const BROKEN_DATA = process.env.BROKEN_DATA?.split(",") ?? [];
+const BROKEN_DATA = process.env.BROKEN_DATA?.split(',') ?? [];
 
 function containBrokenData(target: string) {
   var value = 0;
   BROKEN_DATA.forEach(function (env) {
-    target.includes(dayjs(env).format("YYYY-MM-DD")) && value++;
+    target.includes(dayjs(env).format('YYYY-MM-DD')) && value++;
   });
   return value === 1;
 }
@@ -47,7 +46,8 @@ function containBrokenData(target: string) {
 export const GraphDatasForLine: ReturnGD = ({ animes, mode }: GDProps) => {
   return animes.map((anime: AnimeForGraph) => {
     let inArray = anime.scoreArray;
-    if (mode == "bypopularity") {
+
+    if (mode == 'bypopularity') {
       inArray = anime.membersArray;
     }
 
@@ -56,15 +56,13 @@ export const GraphDatasForLine: ReturnGD = ({ animes, mode }: GDProps) => {
     for (let key in inArray) {
       let numberOfDateForLine: NumberOfDate = anime.scoreArray[key];
 
-      if (mode == "bypopularity") {
+      if (mode == 'bypopularity') {
         numberOfDateForLine = anime.membersArray[key];
       }
       let singlePosForLine;
 
       singlePosForLine = {
-        x: dayjs(Object.keys(numberOfDateForLine ?? "")[0]).format(
-          "YYYY-MM-DD"
-        ),
+        x: dayjs(Object.keys(numberOfDateForLine ?? '')[0]).format('YYYY-MM-DD'),
         y: Object.values(numberOfDateForLine ?? 0)[0],
       };
       if (containBrokenData(singlePosForLine.x)) {
@@ -77,7 +75,7 @@ export const GraphDatasForLine: ReturnGD = ({ animes, mode }: GDProps) => {
     return {
       id: `${anime.title_japanese}(ID:${anime.mal_id})`,
       data: optimizePos(positionArrayForLine) as Pos[],
-      color: anime.color ?? "#000",
+      color: anime.color ?? '#000',
     };
   });
 };
@@ -85,7 +83,7 @@ export const GraphDatasForLine: ReturnGD = ({ animes, mode }: GDProps) => {
 export const GraphDatasForBump: ReturnGD = ({ animes, mode }: GDProps) => {
   return animes.map((anime: AnimeForGraph) => {
     let inArray = anime.scoreArray;
-    if (mode == "bypopularity") {
+    if (mode == 'bypopularity') {
       inArray = anime.membersArray;
     }
 
@@ -93,14 +91,12 @@ export const GraphDatasForBump: ReturnGD = ({ animes, mode }: GDProps) => {
 
     for (let key in inArray) {
       let numberOfDateForBump: NumberOfDate = anime.rankOfScoreArray[key];
-      if (mode == "bypopularity") {
+      if (mode == 'bypopularity') {
         numberOfDateForBump = anime.rankOfPopularityArray[key];
       }
 
       let singlePosForBump = {
-        x: dayjs(Object.keys(numberOfDateForBump ?? "")[0]).format(
-          "YYYY-MM-DD"
-        ),
+        x: dayjs(Object.keys(numberOfDateForBump ?? '')[0]).format('YYYY-MM-DD'),
         y: Object.values(numberOfDateForBump ?? 0)[0],
       };
 
@@ -114,7 +110,7 @@ export const GraphDatasForBump: ReturnGD = ({ animes, mode }: GDProps) => {
     return {
       id: `${anime.title_japanese}(ID:${anime.mal_id})`,
       data: optimizePos(positionArrayForBump) as Pos[],
-      color: anime.color ?? "#000",
+      color: anime.color ?? '#000',
     };
   });
 };

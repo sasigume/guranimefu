@@ -3,13 +3,15 @@ import ErrorPage from "next/error";
 import { Box } from "@chakra-ui/react";
 
 import { Layout } from "@/components/layout";
-import { AnimeForGraph, FetchedData } from "@/models/index";
-import ConvertForList from "@/lib/converter/for-list";
+import {
+  AnimeForGraph,
+  AnimeForSingle,
+  ConvertedForMultiGraph,
+} from "@/models/index";
 import AnimeSingle from "@/components/anime-single";
-import ConvertForSingle from "@/lib/converter/for-single";
 
 interface AnimeIDPageProps {
-  anime: AnimeForGraph;
+  anime: AnimeForSingle;
   fetchedTime: string;
   lastGSP: Date;
   revalEnv: number;
@@ -21,11 +23,7 @@ const AnimeIDPage = ({
   lastGSP,
   revalEnv,
 }: AnimeIDPageProps) => {
-  let animeConvertedForSingle;
-
   if (anime) {
-    animeConvertedForSingle = ConvertForSingle(anime);
-
     return (
       <>
         <Layout
@@ -38,9 +36,9 @@ const AnimeIDPage = ({
           }}
         >
           <Box>
-            {animeConvertedForSingle ? (
+            {anime ? (
               <>
-                <AnimeSingle anime={animeConvertedForSingle} />
+                <AnimeSingle anime={anime} />
               </>
             ) : (
               <Box>FAILED TO FETCH DATA</Box>
@@ -67,8 +65,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
   let mal_id;
   context.params ? (mal_id = context.params.id) : (mal_id = null);
 
-  const apiResult: AnimeForGraph = await fetch(
-    process.env.API_URL + `/vercelapp-getById?mal_id=${mal_id}`,
+  const apiResult: AnimeForSingle = await fetch(
+    process.env.API_URL + `/vercelapp-getByIdConverted?mal_id=${mal_id}`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",
@@ -93,8 +91,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export async function getStaticPaths() {
-  const apiResult: FetchedData = await fetch(
-    process.env.API_URL + `/vercelapp-getAll`,
+  const apiResult: ConvertedForMultiGraph = await fetch(
+    process.env.API_URL + `/vercelapp-getConverted`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",
@@ -106,7 +104,7 @@ export async function getStaticPaths() {
     })
     .catch((e) => console.error(e));
 
-  const paths = ConvertForList(apiResult).map(
+  const paths = apiResult.allAnimes.map(
     (anime: AnimeForGraph) => `/animes/${anime.mal_id}`
   );
   return {
@@ -114,8 +112,3 @@ export async function getStaticPaths() {
     fallback: false,
   };
 }
-
-/*
-export default function AnimeIDPage() {return <Box>API準備中</Box>}
-
-*/

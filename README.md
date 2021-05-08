@@ -1,4 +1,6 @@
-# Animegurafu
+# Guranimefu
+
+Myanimelistのランキングを、毎日自動で記録し、グラフ化します。
 
 ## Thank you
 

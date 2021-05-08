@@ -6,11 +6,14 @@ const dayjs = require('dayjs');
 import 'dayjs/locale/ja';
 dayjs.locale('ja');
 
-import { AnimeForGraph, Subtype, FetchedData } from './models';
+import { AnimeForGraph, Subtype } from '../models/mal';
 import { convert } from './common/convert';
-interface Message {
-  message: string;
-}
+
+/*
+
+重要: このファンクションは v0.6.0 以降のクライアントでは使えません
+
+*/
 
 const getAnimesArray = async (mode: Subtype) => {
   let order = 'rankOfScore';
@@ -41,7 +44,7 @@ const getAnimesArray = async (mode: Subtype) => {
 
 const getAll = functions
   .region('asia-northeast1')
-  .https.onRequest(async (request, response: FetchedData | Message | any) => {
+  .https.onRequest(async (request, response: any) => {
     const secret = request.headers.authorization as string;
 
     if (secret !== adminConfig.vercelapp.auth) {

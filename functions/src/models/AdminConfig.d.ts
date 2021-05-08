@@ -17,5 +17,6 @@ export interface AdminConfig {
   vercelapp: {
     auth: string;
     limit: string;
+    brokendata: string;
   };
 }

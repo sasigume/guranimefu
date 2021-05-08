@@ -1,17 +1,16 @@
-import ConvertForMultiGraph from "@/lib/converter/for-multi-graph";
-import { AnimeForSingle, FetchedData } from "@/models/index";
-import { ConvertedForMultiGraph } from "@/models/index";
+import { AnimeForSingle } from "@/models/index";
 import {
   Box,
   Divider,
+  Flex,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import NivoBump from "../nivo/nivo-bump";
 import NivoLine from "../nivo/nivo-line";
+import GraphWrapper from "../graph-wrapper";
 
 interface Props {
   anime: AnimeForSingle;
@@ -31,22 +30,14 @@ const SingleAnimeGraph = ({ anime }: Props) => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <Box fontSize="1.8rem">スコア</Box>
-              <>
-                <Box w={length * 50} h="3000px" position="static">
-                  <NivoLine gds={anime.gdsForLineScore} mode="byscore" />
-                </Box>
-                <Divider my={16} />
-              </>
+              <GraphWrapper wBy={40} length={length} title="スコア">
+                <NivoLine gds={anime.gdsForLineScore} mode="byscore" />
+              </GraphWrapper>
             </TabPanel>
             <TabPanel>
-              <Box fontSize="1.8rem">メンバー数</Box>
-
-              <>
-                <Box w={length * 50} h="3000px" position="static">
-                  <NivoLine gds={anime.gdsForLinePop} mode="bypopularity" />
-                </Box>
-              </>
+              <GraphWrapper wBy={40} length={length} title="メンバー数">
+                <NivoLine gds={anime.gdsForLinePop} mode="bypopularity" />
+              </GraphWrapper>
             </TabPanel>
           </TabPanels>
         </Tabs>

@@ -57,3 +57,74 @@ export interface AnimeOnFirebase {
   rankOfPopularityArray?: numberOfDate[];
   color?: string;
 }
+
+export type GraphType = 'line' | 'bump';
+
+export interface Pos {
+  x: string;
+  y: number;
+}
+
+export type graphData = {
+  id: string;
+  data: Pos[];
+  color: string;
+};
+
+export interface DataForTwoGraph {
+  gdsForBump: graphData[];
+  gdsForLine: graphData[];
+}
+
+export type ConvertedForMultiGraph = {
+  ignoredDates: string[];
+  sampleLength: number;
+  lastConverted: Date;
+  byScore: DataForTwoGraph;
+  byPopularity: DataForTwoGraph;
+};
+
+export interface NumberOfDate {
+  [key: string]: number;
+}
+
+export interface AnimeForGraph {
+  cacheTtlOfRanking: number;
+  lastUpdateEnv: string;
+  lastUpdateTime: any;
+  updateTimeArray?: tsOfDate[];
+  start_date: string;
+  end_date: string;
+  mal_id: string;
+  title: string;
+  title_japanese: string;
+  url: string;
+  image_url: string;
+  type: string;
+  score: number;
+  scored_by: number;
+  members: number;
+  favorites: number;
+  rankOfPopularity: number;
+  rankOfScore: number;
+  scoreArray: numberOfDate[];
+  membersArray: numberOfDate[];
+  rankOfScoreArray: numberOfDate[];
+  rankOfPopularityArray: numberOfDate[];
+  color: string;
+}
+
+export interface AnimeForGraphWithLastFetched extends AnimeForGraph {
+  lastFetched?: string;
+}
+
+export interface AnimeForSingle extends AnimeForGraph {
+  // BUMP graph doesn't make sense for single anime
+  gdsForLinePop: graphData[];
+  gdsForLineScore: graphData[];
+}
+
+export interface PreConvert {
+  animesByPopularity: AnimeForGraph[];
+  animesByScore: AnimeForGraph[];
+}

@@ -2,7 +2,9 @@ import * as functions from 'firebase-functions';
 import { AdminConfig } from '../models/AdminConfig';
 const adminConfig = functions.config() as AdminConfig;
 import getAll from './getAll';
+import getConverted from './getConverted';
 import getById from './getById';
+import getByIdConverted from './getByIdConverted';
 import updateFirestore from './updateFirestore';
 
 const runtimeOpts = {
@@ -11,6 +13,10 @@ const runtimeOpts = {
 
 exports.getAll = getAll;
 exports.getById = getById;
+
+// getConvertedはv0.6.0以降用
+exports.getConverted = getConverted;
+exports.getByIdConverted = getByIdConverted;
 
 exports.updateFirestore = functions
   .runWith(runtimeOpts)

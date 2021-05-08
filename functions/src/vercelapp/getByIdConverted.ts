@@ -5,21 +5,16 @@ const adminConfig = functions.config() as AdminConfig;
 const dayjs = require('dayjs');
 import 'dayjs/locale/ja';
 dayjs.locale('ja');
-import { AnimeForGraph } from '../models/mal';
+import { AnimeForGraph, AnimeForSingle } from '../models/mal';
 import { convert } from './common/convert';
+import ConvertForSingle from '../lib/converter/for-single';
 interface Message {
   message: string;
 }
 
-/*
-
-重要: このファンクションは v0.6.0 以降のクライアントでは使えません
-
-*/
-
-const getById = functions
+const getByIdConverted = functions
   .region('asia-northeast1')
-  .https.onRequest(async (request, response: AnimeForGraph | Message | any) => {
+  .https.onRequest(async (request, response: AnimeForSingle | Message | any) => {
     const secret = request.headers.authorization as string;
 
     if (secret !== adminConfig.vercelapp.auth) {
@@ -33,11 +28,13 @@ const getById = functions
 
     const snapshot = await query.get();
 
-    const animeData = (await snapshot.data()) as AnimeForGraph;
+    const animeData = snapshot.data() as AnimeForGraph;
 
     const result = convert(animeData);
 
-    response.send(result);
+    const converted = ConvertForSingle(result);
+
+    response.send(converted);
   });
 
-export default getById;
+export default getByIdConverted;

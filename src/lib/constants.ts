@@ -18,7 +18,7 @@ export const CONST_REPO_URL = REPO_URL;
 
 // CONSTANTS
 
-export const SITE_NAME = "グラニメフ";
+export const SITE_NAME = "グラニメフ(GURANIMEFU)";
 
 export const SITE_DESC =
-  "アニメの10段階評価と視聴者数を、海外(MyAnimeList)から毎日取得。順位と数値をグラフ化します。";
+  "アニメの10段階評価と視聴者数を、海外(MyAnimeList)から毎日取得。順位と数値をグラフ化します。Automatically convert MAL ranking to line/bump charts every day.";
