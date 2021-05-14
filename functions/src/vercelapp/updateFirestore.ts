@@ -226,7 +226,7 @@ const updateFirestore = async (modes: Subtype[]) => {
       \n\n===
       \n\n## エラー内容
       \n\n${JSON.stringify(e, null, '\t')}`,
-        from: adminConfig.common.notice ?? 'cloudFunctions@napoan.com',
+        from: adminConfig.common.notice ?? 'cloudFunctions@ima.icu',
         fromName: 'Heroku jikan-firebase',
         to: adminConfig.common.notice ?? 'sasigume+cloudFunctionsFailed@gmail.com',
       };

@@ -252,7 +252,7 @@ export const postToHatenaBlog = async () => {
       let options = {
         title: articleData.articleTitle ?? '',
         content: articleData.articleContent,
-        from: adminConfig.hatenablog.sender ?? 'heroku@pawaa.app',
+        from: adminConfig.hatenablog.sender ?? 'cloudFunctions@ima.icu',
         fromName: 'はてな投稿',
         to: adminConfig.hatenablog.to ?? 'sasigume+herokuFailed@gmail.com',
       };
