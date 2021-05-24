@@ -3,6 +3,10 @@ export interface AdminConfig {
     notice: string;
   };
 
+  jikan: {
+    wait: string;
+  };
+
   hatenablog: {
     sender: string;
     limit: string;
