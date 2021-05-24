@@ -19,7 +19,7 @@ exports.getRss = getRss;
 exports.updateFirestore = functions
   .runWith(runtimeOpts)
   .region('asia-northeast1')
-  .pubsub.schedule('0 */6 * * *')
+  .pubsub.schedule('30 */6 * * *')
   .timeZone('Asia/Tokyo')
   .onRun((context: any) => {
     functions.logger.info('AUTOMATICALLY STARTED JIKAN-FIREBASE SCRIPT');
