@@ -173,8 +173,8 @@ const generateArticle = async (hatenaMode: HatenaMode) => {
     \n\n
     \n\n===
     \n\nこのランキングは、MyAnimeListの非公式API「Jikan」を使用し、毎日自動で生成しています。詳しくは以下のソースコードをご覧ください。
-    \n\n[レポジトリ](https://github.com/sasigume/guranimefu-functions)
-    \n\nなお、送信にGCPを使っているので、何らかの障害が発生した場合は投稿されません。
+    \n\n[レポジトリ](https://github.com/aelyone/guranimefu)
+    \n\nなお、送信にGCPとMailjetを使っているので、それらに障害が発生した場合は投稿されません。
     \n\n===\n\nsource: [MyAnimeList](https://myanimelist.net/topanime.php?type=${hatenaMode}) / Created at ${today}, ${now}
     \n\n
     `;
@@ -252,9 +252,9 @@ export const postToHatenaBlog = async () => {
       let options = {
         title: articleData.articleTitle ?? '',
         content: articleData.articleContent,
-        from: adminConfig.hatenablog.sender ?? 'cloudFunctions@ima.icu',
+        from: adminConfig.hatenablog.sender ?? 'cloudFunctions@aely.one',
         fromName: 'はてな投稿',
-        to: adminConfig.hatenablog.to ?? 'sasigume+herokuFailed@gmail.com',
+        to: adminConfig.hatenablog.to ?? 'sasigume+cloudFunctionsFailed@gmail.com',
       };
       console.log('Title: ' + articleData.articleTitle);
 
