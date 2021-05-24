@@ -74,6 +74,7 @@ export type ConvertedForMultiGraph = {
   lastConverted: Date;
   byScore: DataForTwoGraph;
   byPopularity: DataForTwoGraph;
+  allAnimes: AnimeForGraph[];
 };
 
 export interface NumberOfDate {

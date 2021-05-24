@@ -96,7 +96,7 @@ const addFireBase = async (
       ...basicInfo,
       data: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.members }]),
     };
-    const char_bump_score = {
+    const chart_bump_score = {
       ...basicInfo,
       data: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.rankOfScore }]),
     };
@@ -111,7 +111,7 @@ const addFireBase = async (
       lastUpdateTime: admin.firestore.Timestamp.now(),
       chart_line_score,
       chart_line_popularity,
-      char_bump_score,
+      chart_bump_score,
       chart_bump_popularity,
     };
     ref

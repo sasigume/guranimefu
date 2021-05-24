@@ -47,6 +47,8 @@ const getConverted = functions
     const limitQuery = request.query.limit as string | undefined;
     const limit = parseInt(limitQuery ?? '50');
 
+    functions.logger.info(`Limit is: ${limit}`);
+
     if (secret !== adminConfig.vercelapp.auth) {
       return response.status(401).json({
         message: 'Invalid token',
