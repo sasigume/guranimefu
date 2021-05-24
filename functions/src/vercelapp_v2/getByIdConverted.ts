@@ -1,5 +1,4 @@
 import * as functions from 'firebase-functions';
-import * as admin from 'firebase-admin';
 import { AdminConfig } from '../models/AdminConfig';
 const adminConfig = functions.config() as AdminConfig;
 const dayjs = require('dayjs');
@@ -8,6 +7,7 @@ dayjs.locale('ja');
 import { AnimeForGraph, AnimeForSingle } from '../models/mal_v2';
 import { addFetchTime } from './common/add-fetch-time';
 import ConvertForSingle from '../lib/converter_v2/for-single';
+import { COLLECTION_V2 } from './common/collections';
 interface Message {
   message: string;
 }
@@ -24,7 +24,7 @@ const getByIdConverted = functions
     }
     let mal_id = request.query.mal_id as string;
 
-    const query = admin.firestore().collection('animeCollection').doc(mal_id);
+    const query = COLLECTION_V2.doc(mal_id);
 
     const snapshot = await query.get();
 
