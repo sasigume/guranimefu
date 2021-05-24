@@ -1,5 +1,5 @@
 import { GetStaticProps } from "next";
-import { Box, Divider, Heading } from "@chakra-ui/react";
+import { Box, Divider, Heading, Stack } from "@chakra-ui/react";
 
 import { Layout } from "@/components/layout";
 
@@ -34,26 +34,26 @@ const AnimesPage = ({
           revalidate: revalEnv,
         }}
       >
-        <Heading>最新30件のデータ</Heading>
-        <Box>
-          {data.byScore && data.byPopularity ? (
-            <>
-              <MultipleGraph dataForGraph={data} />
+        <Stack spacing={12}>
+          <Box>
+            <Heading as="h2">読み込み件数を変更</Heading>
+            <SelectLimit />
+          </Box>
+          <Stack spacing={6}>
+            <Heading as="h2">最新のデータ</Heading>
+            {data.byScore && data.byPopularity ? (
+              <>
+                <MultipleGraph dataForGraph={data} />
 
-              <Divider my={12} />
+                <Divider my={12} />
+              </>
+            ) : (
+              <Box>FAILED TO FETCH DATA</Box>
+            )}
+          </Stack>
 
-              <AnimeList animes={data.allAnimes} />
-
-              <Divider my={12} />
-            </>
-          ) : (
-            <Box>FAILED TO FETCH DATA</Box>
-          )}
-        </Box>
-        <Divider />
-        <Box>
-          <SelectLimit />
-        </Box>
+          {data.allAnimes.length > 0 && <AnimeList animes={data.allAnimes} />}
+        </Stack>
       </Layout>
     </>
   );

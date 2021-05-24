@@ -1,5 +1,5 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Stack } from "@chakra-ui/react";
 
 import { Layout } from "@/components/layout";
 
@@ -18,23 +18,25 @@ const ViewAll = ({ data, convertedTime, lastGSP, limit }: AnimesPageProps) => {
   return (
     <>
       <Layout
-        title={`最新${limit}件のデータ`}
+        title={`最大${limit}日分まで表示`}
         desc={SITE_DESC}
         debugInfo={{
           lastGSP: lastGSP,
           lastFetched: convertedTime,
         }}
       >
-        <Heading>最新{limit}件のデータ</Heading>
-        <Box>
-          {data.byScore && data.byPopularity ? (
-            <>
-              <MultipleGraph dataForGraph={data} />
-            </>
-          ) : (
-            <Box>FAILED TO FETCH DATA</Box>
-          )}
-        </Box>
+        <Stack spacing={12}>
+          <Heading>最大{limit}日分まで表示</Heading>
+          <Box>
+            {data.byScore && data.byPopularity ? (
+              <>
+                <MultipleGraph limit={limit} dataForGraph={data} />
+              </>
+            ) : (
+              <Box>FAILED TO FETCH DATA</Box>
+            )}
+          </Box>
+        </Stack>
       </Layout>
     </>
   );

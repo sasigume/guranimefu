@@ -88,7 +88,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export async function getStaticPaths() {
   const apiResult: AnimeForRss[] = await fetch(
-    process.env.API_URL + `/vercelapp-getRss`,
+    process.env.API_URL + `/vercelapp_v2-getRss`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",

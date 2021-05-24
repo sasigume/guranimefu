@@ -12,7 +12,7 @@ const SelectLimit = () => {
   return (
     <Stack spacing={4}>
       <Slider
-        defaultValue={0}
+        defaultValue={50}
         onChange={handleChange}
         onChangeEnd={handleChange}
         max={100}

@@ -1,5 +1,6 @@
 import { ConvertedForMultiGraph } from "@/models/index";
 import {
+  Badge,
   Box,
   Divider,
   Tab,
@@ -14,9 +15,10 @@ import NivoLine from "../nivo/nivo-line";
 
 interface AnimeGraphProps {
   dataForGraph: ConvertedForMultiGraph;
+  limit?: number;
 }
 
-const MultipleGraph = ({ dataForGraph }: AnimeGraphProps) => {
+const MultipleGraph = ({ dataForGraph, limit }: AnimeGraphProps) => {
   let length = dataForGraph.sampleLength;
 
   if (!dataForGraph.byScore || !dataForGraph.byPopularity) {
@@ -24,6 +26,14 @@ const MultipleGraph = ({ dataForGraph }: AnimeGraphProps) => {
   } else {
     return (
       <Box id="a_graph" w="full">
+        <Box>
+          <Badge>{length}日分のデータが見つかりました。</Badge>
+          {limit && (
+            <Badge colorScheme="red">
+              そのうち最大{limit}日分を表示しています。
+            </Badge>
+          )}
+        </Box>
         <Tabs>
           <TabList>
             <Tab fontSize="1.8rem">スコア順</Tab>
