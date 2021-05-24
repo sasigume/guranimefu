@@ -84,7 +84,11 @@ const addFireBase = async (
   return await animeJson.map(async (anime: AnimeOnFirebase, n: number) => {
     let ref = await COLLECTION_V2.doc(`${anime.mal_id}`);
     let refBackup = await COLLECTION_BACKUP_V2.doc(`${anime.mal_id}`);
-    const basicInfo = { id: anime.mal_id, color: anime.color ?? '#000' };
+    const basicInfo = {
+      id: anime.mal_id,
+      color: anime.color ?? '#000',
+      label: anime.title_japanese ?? anime.title,
+    };
 
     // These objects can be used directly with chart library like nivo
 

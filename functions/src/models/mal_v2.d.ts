@@ -61,6 +61,7 @@ export interface Pos {
 export type graphData = {
   id: string;
   data: Pos[];
+  label: string;
   color: string;
 };
 
