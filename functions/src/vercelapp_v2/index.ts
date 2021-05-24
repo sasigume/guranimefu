@@ -1,9 +1,8 @@
 import * as functions from 'firebase-functions';
 import { AdminConfig } from '../models/AdminConfig';
 const adminConfig = functions.config() as AdminConfig;
-import getAll from './getAll';
+
 import getConverted from './getConverted';
-import getById from './getById';
 import getByIdConverted from './getByIdConverted';
 import getRss from './getRss';
 import updateFirestore from './updateFirestore';
@@ -11,9 +10,6 @@ import updateFirestore from './updateFirestore';
 const runtimeOpts = {
   timeoutSeconds: 540,
 };
-
-exports.getAll = getAll;
-exports.getById = getById;
 
 // getConvertedはv0.6.0以降用
 exports.getConverted = getConverted;

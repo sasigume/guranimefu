@@ -5,7 +5,7 @@ const dayjs = require('dayjs');
 import 'dayjs/locale/ja';
 dayjs.locale('ja');
 
-import { convert } from './common/convert';
+import { addFetchTime } from './common/add-fetch-time';
 import ConvertForMultiGraph from '../lib/converter_v2/for-multi-graph';
 import { AnimeForGraph, Subtype, ConvertedForMultiGraph } from '../models/mal_v2';
 import { COLLECTION_V2 } from './common/collections';
@@ -34,7 +34,7 @@ const getAnimesArray = async (mode: Subtype) => {
     }),
   );
   const animesArray = animesData.map((anime: AnimeForGraph) => {
-    return convert(anime);
+    return addFetchTime(anime);
   });
 
   return animesArray;
@@ -44,6 +44,8 @@ const getConverted = functions
   .region('asia-northeast1')
   .https.onRequest(async (request, response: ConvertedForMultiGraph | Message | any) => {
     const secret = request.headers.authorization as string;
+    const limitQuery = request.query.limit as string | undefined;
+    const limit = parseInt(limitQuery ?? '50');
 
     if (secret !== adminConfig.vercelapp.auth) {
       return response.status(401).json({
@@ -59,7 +61,7 @@ const getConverted = functions
       animesByScore: await getAnimesArray('byscore'),
     };
 
-    const converted: ConvertedForMultiGraph = ConvertForMultiGraph(results);
+    const converted: ConvertedForMultiGraph = ConvertForMultiGraph(results, limit);
     const sample = converted.byScore.gdsForBump;
     if (sample[sample.length - 1].id) {
       const lastDay = sample[0].data[sample[0].data.length - 1].x;

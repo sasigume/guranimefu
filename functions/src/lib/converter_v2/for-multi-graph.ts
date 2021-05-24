@@ -1,16 +1,11 @@
 import { AnimeForGraph, ConvertedForMultiGraph, PreConvert } from '../..//models/mal_v2';
 import dayjs from 'dayjs';
-import * as functions from 'firebase-functions';
-import { AdminConfig } from '../../models/AdminConfig';
-const adminConfig = functions.config() as AdminConfig;
 
 import { GraphDatasForBump, GraphDatasForLine } from './graph-data-parser';
 
-const BROKEN_DATA = adminConfig.vercelapp.brokendata.split(',');
+type Converter = (fetchedData: PreConvert, slice: number) => ConvertedForMultiGraph;
 
-type Converter = (fetchedData: PreConvert) => ConvertedForMultiGraph;
-
-const ConvertForMultiGraph: Converter = (fetchedData) => {
+const ConvertForMultiGraph: Converter = (fetchedData, slice) => {
   let allAnimeArray = [...fetchedData.animesByPopularity, ...fetchedData.animesByScore];
 
   // REMOVE SAME ANIMES IN TWO RANKING
@@ -43,7 +38,6 @@ const ConvertForMultiGraph: Converter = (fetchedData) => {
 
   const result = (slice: number) => {
     return {
-      ignoredDates: BROKEN_DATA,
       lastConverted: dayjs().toDate(),
       sampleLength: gdsForBumpScore[0].data.length,
       allAnimes: allAnimes,
@@ -59,9 +53,7 @@ const ConvertForMultiGraph: Converter = (fetchedData) => {
       },
     };
   };
-
-  let finalSlice = 50;
-  return result(finalSlice) as ConvertedForMultiGraph;
+  return result(slice) as ConvertedForMultiGraph;
 };
 
 export default ConvertForMultiGraph;

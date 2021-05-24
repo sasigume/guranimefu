@@ -5,7 +5,7 @@ const dayjs = require('dayjs');
 import 'dayjs/locale/ja';
 dayjs.locale('ja');
 
-import { convert } from './common/convert';
+import { addFetchTime } from './common/add-fetch-time';
 import { AnimeForGraph, Subtype, ConvertedForMultiGraph, AnimeForRss } from '../models/mal_v2';
 import ConvertForRss from '../lib/converter_v2/for-rss';
 import { COLLECTION_V2 } from './common/collections';
@@ -34,7 +34,7 @@ const getAnimesArray = async (mode: Subtype) => {
     }),
   );
   const animesArray = animesData.map((anime: AnimeForGraph) => {
-    return convert(anime);
+    return addFetchTime(anime);
   });
 
   return animesArray;

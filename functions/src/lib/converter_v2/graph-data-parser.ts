@@ -1,4 +1,4 @@
-import { AnimeForGraph, Subtype, graphData, Pos } from '../../models/mal_v2';
+import { AnimeOnFirebase, Subtype, graphData, Pos } from '../../models/mal_v2';
 import dayjs from 'dayjs';
 
 // Conver data into the structure shown below URL
@@ -10,56 +10,50 @@ import dayjs from 'dayjs';
   // https://stackoverflow.com/a/60737337/15161394
   ------------------------------*/
 
-const optimizePos = (posArray: Pos[]) => {
-  let posWithoutDuplicate: any = {};
-  for (let item of posArray) {
-    posWithoutDuplicate[item.x] = item;
-  }
-  const datasWithoutDuplicate = Object.values(posWithoutDuplicate) as any;
+const optimizePos = (graphData?: graphData) => {
+  if (graphData) {
+    let posWithoutDuplicate: any = {};
+    for (let item of graphData.data) {
+      posWithoutDuplicate[item.x] = item;
+    }
+    const datasWithoutDuplicate = Object.values(posWithoutDuplicate) as any;
 
-  return datasWithoutDuplicate.sort((a: Pos, b: Pos) =>
-    dayjs(a.x).toDate() < dayjs(b.x).toDate()
-      ? -1
-      : dayjs(b.x).toDate() > dayjs(a.x).toDate()
-      ? 1
-      : 0,
-  );
+    return datasWithoutDuplicate.sort((a: Pos, b: Pos) =>
+      dayjs(a.x).toDate() < dayjs(b.x).toDate()
+        ? -1
+        : dayjs(b.x).toDate() > dayjs(a.x).toDate()
+        ? 1
+        : 0,
+    );
+  } else return [] as Pos[];
 };
 
 interface GDProps {
-  animes: AnimeForGraph[];
+  animes: AnimeOnFirebase[];
   mode: Subtype;
 }
 
 type ReturnGD = ({ animes, mode }: GDProps) => graphData[];
 
 export const GraphDatasForLine: ReturnGD = ({ animes, mode }: GDProps) => {
-  return animes.map((anime: AnimeForGraph) => {
-    let array = anime.scoreArray;
+  return animes.map((anime) => {
+    let array = anime.chart_line_score;
 
     if (mode == 'bypopularity') {
-      array = anime.membersArray;
+      array = anime.chart_line_popularity;
     }
 
-    return {
-      id: `${anime.title_japanese}(ID:${anime.mal_id})`,
-      data: optimizePos(array) as Pos[],
-      color: anime.color ?? '#000',
-    };
+    return { ...array, data: optimizePos(array) } as graphData;
   });
 };
 
 export const GraphDatasForBump: ReturnGD = ({ animes, mode }: GDProps) => {
-  return animes.map((anime: AnimeForGraph) => {
-    let array = anime.scoreArray;
+  return animes.map((anime) => {
+    let array = anime.chart_bump_score;
     if (mode == 'bypopularity') {
-      array = anime.membersArray;
+      array = anime.chart_bump_popularity;
     }
 
-    return {
-      id: `${anime.title_japanese}(ID:${anime.mal_id})`,
-      data: optimizePos(array) as Pos[],
-      color: anime.color ?? '#000',
-    };
+    return { ...array, data: optimizePos(array) } as graphData;
   });
 };

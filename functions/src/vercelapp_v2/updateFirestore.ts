@@ -8,7 +8,7 @@ const ColorHash = require('color-hash');
 const colorHashGen = new ColorHash();
 const dayjs = require('dayjs');
 import { MailJet } from '../lib/mailjet';
-import { AnimeTop, AnimeDetail, AnimeOnFirebase, Subtype } from '../models/mal';
+import { AnimeTop, AnimeDetail, AnimeOnFirebase, Subtype } from '../models/mal_v2';
 import { COLLECTION_BACKUP_V2, COLLECTION_V2 } from './common/collections';
 const serverDate = admin.firestore.Timestamp.fromDate(new Date());
 const today = dayjs(serverDate.toDate()).format('YYYY-MM-DD');
@@ -84,37 +84,35 @@ const addFireBase = async (
   return await animeJson.map(async (anime: AnimeOnFirebase, n: number) => {
     let ref = await COLLECTION_V2.doc(`${anime.mal_id}`);
     let refBackup = await COLLECTION_BACKUP_V2.doc(`${anime.mal_id}`);
+    const basicInfo = { id: anime.mal_id, color: anime.color ?? '#000' };
 
+    // These objects can be used directly with chart library like nivo
+
+    const chart_line_score = {
+      ...basicInfo,
+      data: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.score }]),
+    };
+    const chart_line_popularity = {
+      ...basicInfo,
+      data: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.members }]),
+    };
+    const char_bump_score = {
+      ...basicInfo,
+      data: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.rankOfScore }]),
+    };
+    const chart_bump_popularity = {
+      ...basicInfo,
+      data: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.rankOfPopularity }]),
+    };
     const fields = {
-      color: anime.color,
+      ...anime,
       cacheTtlOfRanking: cacheTtlOfRanking,
       lastUpdateEnv: lastUpdateEnv,
       lastUpdateTime: admin.firestore.Timestamp.now(),
-      updateTimeArray: admin.firestore.FieldValue.arrayUnion(
-        ...[{ x: today, y: admin.firestore.Timestamp.now() }],
-      ),
-      mal_id: anime.mal_id,
-      title: anime.title,
-      title_japanese: anime.title_japanese,
-      url: anime.url,
-      image_url: anime.image_url,
-      type: anime.type,
-      start_date: anime.start_date,
-      end_date: anime.end_date,
-      score: anime.score,
-      scored_by: anime.scored_by,
-      members: anime.members,
-      favorites: anime.favorites,
-      rankOfPopularity: anime.rankOfPopularity,
-      rankOfScore: anime.rankOfScore,
-      membersArray: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.members }]),
-      scoreArray: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.score }]),
-      rankOfScoreArray: admin.firestore.FieldValue.arrayUnion(
-        ...[{ x: today, y: anime.rankOfScore }],
-      ),
-      rankOfPopularityArray: admin.firestore.FieldValue.arrayUnion(
-        ...[{ x: today, y: anime.rankOfPopularity }],
-      ),
+      chart_line_score,
+      chart_line_popularity,
+      char_bump_score,
+      chart_bump_popularity,
     };
     ref
       .set(

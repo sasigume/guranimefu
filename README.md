@@ -2,6 +2,43 @@
 
 Myanimelistのランキングを、毎日自動で記録し、グラフ化します。
 
+## APIのコンフィグ設定方法
+
+Cloud functions for Firebaseなので、環境変数の設定がちょっとめんどくさいです。
+
+### 1. AdminConfig.d.tsで型を作る
+
+後で呼び出すために`string`で型を作っておきます。
+
+```ts
+{
+  "XXX": {
+    "yyy": string;
+  };
+}
+```
+
+### 2. configを登録
+
+```sh
+firebase functions:config:set XXX.YYY="ZZZ"
+```
+
+### 3. configをエミュレータに反映
+
+**`.runtimeconfig.json`に値を書かないと、エミュレータが読んでくれません。**
+
+コミットしていないのですが、いずれにせよ以下のコマンドで作成されます。
+
+```sh
+cd functions
+firebase functions:config:get > .runtimeconfig.json
+```
+
+### おすすめの設定
+
+`jikan.wait`は**絶対に`2500`以上にしてください。** これがJikan APIの制限を回避するためのインターバルです。
+
 ## Thank you
 
 ### Google Analytics

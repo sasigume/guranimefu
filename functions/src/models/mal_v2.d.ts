@@ -27,8 +27,6 @@ export interface AnimeDetail extends AnimeBase, AnimeTop {
 }
 
 export interface AnimeOnFirebase {
-  // updateTimeArray is back in v2!
-  updateTimeArray: Pos[];
   cacheTtlOfRanking?: number;
   lastUpdateEnv?: string;
   lastUpdateTime?: string;
@@ -46,10 +44,10 @@ export interface AnimeOnFirebase {
   favorites?: number;
   rankOfPopularity?: number;
   rankOfScore?: number;
-  scoreArray?: Pos[];
-  membersArray?: Pos[];
-  rankOfScoreArray?: Pos[];
-  rankOfPopularityArray?: Pos[];
+  chart_line_score?: graphData;
+  chart_line_popularity?: graphData;
+  chart_bump_score?: graphData;
+  chart_bump_popularity?: graphData;
   color?: string;
 }
 
@@ -72,7 +70,6 @@ export interface DataForTwoGraph {
 }
 
 export type ConvertedForMultiGraph = {
-  ignoredDates: string[];
   sampleLength: number;
   lastConverted: Date;
   byScore: DataForTwoGraph;
@@ -84,7 +81,6 @@ export interface NumberOfDate {
 }
 
 export interface AnimeForGraph {
-  updateTimeArray: Pos[];
   cacheTtlOfRanking: number;
   lastUpdateEnv: string;
   lastUpdateTime: string;
@@ -102,26 +98,23 @@ export interface AnimeForGraph {
   favorites: number;
   rankOfPopularity: number;
   rankOfScore: number;
-  scoreArray: Pos[];
-  membersArray: Pos[];
-  rankOfScoreArray: Pos[];
-  rankOfPopularityArray: Pos[];
+  chart_line_score: graphData;
+  chart_line_popularity: graphData;
+  chart_bump_score: graphData;
+  chart_bump_popularity: graphData;
   color: string;
 }
 
 export interface AnimeForGraphWithLastFetched extends AnimeForGraph {
-  lastFetched?: string;
+  lastFetched?: any;
 }
 
 export interface AnimeForSingle extends AnimeForGraph {
   description: string;
-  // BUMP graph doesn't make sense for single anime
-  gdsForLinePop: graphData[];
-  gdsForLineScore: graphData[];
 }
 
 export interface PreConvert {
-  lastFetched: string;
+  lastFetched: any;
   animesByPopularity: AnimeForGraph[];
   animesByScore: AnimeForGraph[];
 }

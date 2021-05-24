@@ -13,14 +13,8 @@ export type graphData = {
   color: string;
 };
 
-export interface DataForTwoGraph {
-  gdsForBump: graphData[] | void;
-  gdsForLine: graphData[] | void;
-}
-
 export type ConvertedForMultiGraph =
   | {
-      ignoredDates: string[];
       sampleLength: number;
       lastConverted: Date;
       byScore: DataForTwoGraph;
@@ -28,20 +22,12 @@ export type ConvertedForMultiGraph =
     }
   | Void;
 
-export interface NumberOfDate {
-  [key: string]: number;
-}
-
-export interface tsOfDate {
-  [key: string]: firebase.firestore.Timestamp;
-}
-
 export interface AnimeForGraph {
   lastFetched?: string;
   cacheTtlOfRanking: number;
   lastUpdateEnv: string;
   lastUpdateTime: any;
-  updateTimeArray?: tsOfDate[];
+  updateTimeArray?: Pos[];
   start_date: string;
   end_date: string;
   mal_id: string;
@@ -56,18 +42,15 @@ export interface AnimeForGraph {
   favorites: number;
   rankOfPopularity: number;
   rankOfScore: number;
-  scoreArray: numberOfDate[];
-  membersArray: numberOfDate[];
-  rankOfScoreArray: numberOfDate[];
-  rankOfPopularityArray: numberOfDate[];
+  chart_line_score?: graphData;
+  chart_line_popularity?: graphData;
+  chart_bump_score?: graphData;
+  chart_bump_popularity?: graphData;
   color: string;
 }
 
 export interface AnimeForSingle extends AnimeForGraph {
   description: string;
-  // BUMP graph doesn't make sense for single anime
-  gdsForLinePop: graphData[];
-  gdsForLineScore: graphData[];
 }
 
 export interface AnimeForRss {

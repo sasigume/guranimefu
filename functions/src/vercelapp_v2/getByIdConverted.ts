@@ -6,7 +6,7 @@ const dayjs = require('dayjs');
 import 'dayjs/locale/ja';
 dayjs.locale('ja');
 import { AnimeForGraph, AnimeForSingle } from '../models/mal_v2';
-import { convert } from './common/convert';
+import { addFetchTime } from './common/add-fetch-time';
 import ConvertForSingle from '../lib/converter_v2/for-single';
 interface Message {
   message: string;
@@ -30,7 +30,7 @@ const getByIdConverted = functions
 
     const animeData = snapshot.data() as AnimeForGraph;
 
-    const result = convert(animeData);
+    const result = addFetchTime(animeData);
 
     const converted = ConvertForSingle(result);
 

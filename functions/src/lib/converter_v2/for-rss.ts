@@ -18,7 +18,7 @@ const ConvertForRss: Converter = (fetchedData) => {
 
   return sorted.map((anime) => {
     return {
-      lastFetched: fetchedData.lastFetched,
+      lastFetched: fetchedData.lastFetched as string,
       title: anime.title_japanese ?? anime.title,
       mal_id: anime.mal_id,
       description: `MyAnimeListで${anime.rankOfPopularity}位の人気を誇るアニメの視聴者数・評価をグラフ化。現在${anime.members}人が視聴済み。`,
