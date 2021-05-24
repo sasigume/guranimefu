@@ -38,13 +38,6 @@ const MultipleGraph = ({ dataForGraph }: AnimeGraphProps) => {
                 />
               </GraphWrapper>
 
-              <GraphWrapper length={length} title="順位推移">
-                <NivoBump
-                  gds={dataForGraph.byScore.gdsForBump}
-                  mode="byscore"
-                />
-              </GraphWrapper>
-
               <GraphWrapper length={length} title="数値順位">
                 <NivoLine
                   gds={dataForGraph.byScore.gdsForLine}
@@ -77,12 +70,9 @@ const MultipleGraph = ({ dataForGraph }: AnimeGraphProps) => {
           ※同じタイトルでも期が別なら分裂します。(蟲師続章は分裂してる)
         </Box>
         <Box bg="gray.200" p={6} m={6} rounded="xl">
-          <Box fontSize="1.3rem" fontWeight="bold">
-            バグってるので無視したデータ: {dataForGraph.ignoredDates.join(" ")}
-          </Box>
           <Box>集計日数: {length}</Box>
           <Box fontSize="1rem">
-            最終グラフ生成日時: {`${dataForGraph.lastFetched}`}
+            最終グラフ生成日時: {`${dataForGraph.lastConverted}`}
           </Box>
         </Box>
       </Box>

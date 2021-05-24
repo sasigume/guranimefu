@@ -62,7 +62,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   context.params ? (mal_id = context.params.id) : (mal_id = null);
 
   const apiResult: AnimeForSingle = await fetch(
-    process.env.API_URL + `/vercelapp-getByIdConverted?mal_id=${mal_id}`,
+    process.env.API_URL + `/vercelapp_v2-getByIdConverted?mal_id=${mal_id}`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",

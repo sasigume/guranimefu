@@ -1,5 +1,5 @@
 import { GetStaticProps } from "next";
-import { Box, Divider } from "@chakra-ui/react";
+import { Box, Divider, Heading } from "@chakra-ui/react";
 
 import { Layout } from "@/components/layout";
 
@@ -7,17 +7,18 @@ import { ConvertedForMultiGraph } from "@/models/index";
 import AnimeList from "@/components/anime-list";
 import { SITE_NAME, SITE_DESC } from "@/lib/constants";
 import MultipleGraph from "@/components/anime-graph/multiple-animes";
+import SelectLimit from "@/components/gui/select-limit";
 
 interface AnimesPageProps {
   data: ConvertedForMultiGraph;
-  fetchedTime: string;
+  convertedTime: string;
   lastGSP: Date;
   revalEnv: number;
 }
 
 const AnimesPage = ({
   data,
-  fetchedTime,
+  convertedTime,
   lastGSP,
   revalEnv,
 }: AnimesPageProps) => {
@@ -29,10 +30,11 @@ const AnimesPage = ({
         desc={SITE_DESC}
         debugInfo={{
           lastGSP: lastGSP,
-          lastFetched: fetchedTime,
+          lastFetched: convertedTime,
           revalidate: revalEnv,
         }}
       >
+        <Heading>最新30件のデータ</Heading>
         <Box>
           {data.byScore && data.byPopularity ? (
             <>
@@ -48,6 +50,10 @@ const AnimesPage = ({
             <Box>FAILED TO FETCH DATA</Box>
           )}
         </Box>
+        <Divider />
+        <Box>
+          <SelectLimit />
+        </Box>
       </Layout>
     </>
   );
@@ -57,7 +63,7 @@ export default AnimesPage;
 
 export const getStaticProps: GetStaticProps = async () => {
   const apiResult: ConvertedForMultiGraph = await fetch(
-    process.env.API_URL + `/vercelapp-getConverted`,
+    process.env.API_URL + `/vercelapp_v2-getConverted?limit=30`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",
@@ -72,7 +78,7 @@ export const getStaticProps: GetStaticProps = async () => {
   let revalEnv = parseInt(process.env.REVALIDATE ?? "1800");
   return {
     props: {
-      fetchedTime: apiResult.lastFetched ?? null,
+      convertedTime: apiResult.lastConverted ?? null,
       lastGSP: new Date().toUTCString(),
       data: apiResult ?? null,
       revalEnv: revalEnv,
@@ -80,9 +86,3 @@ export const getStaticProps: GetStaticProps = async () => {
     revalidate: revalEnv,
   };
 };
-
-/*
-
-export default function AnimesPage() {return <Box>API準備中</Box>}
-
-*/

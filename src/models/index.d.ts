@@ -10,17 +10,21 @@ export interface Pos {
 export type graphData = {
   id: string;
   data: Pos[];
+  label: string;
   color: string;
 };
+export interface DataForTwoGraph {
+  gdsForBump: graphData[];
+  gdsForLine: graphData[];
+}
 
-export type ConvertedForMultiGraph =
-  | {
-      sampleLength: number;
-      lastConverted: Date;
-      byScore: DataForTwoGraph;
-      byPopularity: DataForTwoGraph;
-    }
-  | Void;
+export interface ConvertedForMultiGraph {
+  sampleLength: number;
+  lastConverted: Date;
+  byScore: DataForTwoGraph;
+  byPopularity: DataForTwoGraph;
+  allAnimes: AnimeForGraph[];
+}
 
 export interface AnimeForGraph {
   lastFetched?: string;
@@ -42,10 +46,10 @@ export interface AnimeForGraph {
   favorites: number;
   rankOfPopularity: number;
   rankOfScore: number;
-  chart_line_score?: graphData;
-  chart_line_popularity?: graphData;
-  chart_bump_score?: graphData;
-  chart_bump_popularity?: graphData;
+  chart_line_score: graphData;
+  chart_line_popularity: graphData;
+  chart_bump_score: graphData;
+  chart_bump_popularity: graphData;
   color: string;
 }
 
