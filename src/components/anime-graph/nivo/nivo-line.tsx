@@ -9,7 +9,14 @@ interface GraphProps {
   gds: graphData[];
   mode: Subtype;
 }
+
 const NivoLine = (props: GraphProps) => {
+  // IDからラベルを探せるようにする
+  let idAndLabelObject: Record<string, string> = {};
+  props.gds.map((gd) => {
+    idAndLabelObject[gd.id] = gd.label;
+  });
+
   let themeText = "rgba(0,0,0,1)";
   const { colorMode } = useColorMode();
   colorMode == "dark"
@@ -29,15 +36,15 @@ const NivoLine = (props: GraphProps) => {
         yScale={{ type: "linear", min: "auto", max: "auto", reverse: false }}
         //yFormat=" >-.2f"
         tooltip={(pointObj: any) => {
-          console.log(pointObj);
           return (
             <Box bg="white" p={1} shadow="lg">
-              <strong>
-                {pointObj.point.serieId}
-                <br />
-                {pointObj.point.data.xFormatted} :{" "}
-                {pointObj.point.data.yFormatted}
+              <strong area-label="アニメタイトル">
+                {/* IDからラベルを呼び出す */}
+                {idAndLabelObject[pointObj.point.serieId]}
               </strong>
+              <br />
+              {pointObj.point.data.xFormatted} :{" "}
+              {pointObj.point.data.yFormatted}
             </Box>
           );
         }}

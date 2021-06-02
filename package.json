@@ -1,6 +1,6 @@
 {
   "name": "guranimefu",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "scripts": {
     "dev": "next",
     "build": "next build",

@@ -10,8 +10,9 @@ interface GraphProps {
   mode: Subtype;
   gds: graphData[];
 }
+
+type graphSingleData = { x: string; y: string };
 const NivoBump = (props: GraphProps) => {
-  let themeText = "rgba(0,0,0,1)";
   return (
     <Box w="full" h="full">
       <ResponsiveBump
@@ -35,6 +36,26 @@ const NivoBump = (props: GraphProps) => {
         pointBorderWidth={3}
         activePointBorderWidth={3}
         pointBorderColor={{ from: "serie.color" }}
+        tooltip={(pointObj: any) => {
+          return (
+            <Box bg="white" p={1} shadow="lg">
+              <strong>{pointObj.serie.label}</strong>
+              <br />
+              <b>
+                {"Last 3 days: "}
+                {pointObj.serie.data
+                  .slice(-3)
+                  .map((d: graphSingleData, n: number) => (
+                    <>
+                      {/* 順位の推移を表示 */}
+                      <strong area-label="アニメタイトル">{d.y}</strong>
+                      <span>{n < 2 && ` → `}</span>
+                    </>
+                  ))}
+              </b>
+            </Box>
+          );
+        }}
         axisTop={{
           //@ts-ignore
           format: function (value: string) {
@@ -71,46 +92,6 @@ const NivoBump = (props: GraphProps) => {
             return `${value}位`;
           },
         }}
-        /* nivo bumpになぜかlegendsを追加していなかったので、とりあえず追加したが
-        bumpコンポーネントがこれを受け付けない可能性もある(未検証) */
-        legends={[
-          {
-            data: [
-              ...(props.gds.map((gd) => {
-                return {
-                  id: gd.id,
-                  label: gd.label,
-                  color: gd.color,
-                  fill: gd.color,
-                };
-              }) as any),
-            ],
-            anchor: "bottom-right",
-            direction: "column",
-            justify: false,
-            translateX: 100,
-            translateY: 0,
-            itemsSpacing: 0,
-            itemDirection: "left-to-right",
-            itemWidth: 80,
-            itemHeight: 20,
-            itemOpacity: 0.75,
-            symbolSize: 12,
-            symbolShape: "circle",
-            symbolBorderColor: "rgba(0, 0, 0, .5)",
-            itemTextColor: themeText,
-            effects: [
-              {
-                on: "hover",
-                style: {
-                  itemTextColor: themeText,
-                  itemBackground: "rgba(0, 0, 0, .03)",
-                  itemOpacity: 1,
-                },
-              },
-            ],
-          },
-        ]}
       />
     </Box>
   );
