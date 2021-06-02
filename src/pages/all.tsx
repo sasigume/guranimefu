@@ -1,69 +1,56 @@
-import { GetStaticProps } from "next";
-import { Box, Divider, Heading, Stack } from "@chakra-ui/react";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { Box, Heading, Stack } from "@chakra-ui/react";
 
 import { Layout } from "@/components/layout";
 
 import { ConvertedForMultiGraph } from "@/models/index";
-import AnimeList from "@/components/anime-list";
-import { SITE_NAME, SITE_DESC } from "@/lib/constants";
+import { SITE_DESC } from "@/lib/constants";
 import MultipleGraph from "@/components/anime-graph/multiple-animes";
-import SelectLimit from "@/components/gui/select-limit";
 
 interface AnimesPageProps {
   data: ConvertedForMultiGraph;
   convertedTime: string;
   lastGSP: Date;
-  revalEnv: number;
+  limit: number;
 }
 
-const AnimesPage = ({
-  data,
-  convertedTime,
-  lastGSP,
-  revalEnv,
-}: AnimesPageProps) => {
+const ViewAll = ({ data, convertedTime, lastGSP, limit }: AnimesPageProps) => {
   return (
     <>
       <Layout
-        isIndex
-        title={SITE_NAME}
+        title={`最大${limit}日分まで表示`}
         desc={SITE_DESC}
         debugInfo={{
           lastGSP: lastGSP,
           lastFetched: convertedTime,
-          revalidate: revalEnv,
         }}
       >
         <Stack spacing={12}>
+          <Heading>最大{limit}日分まで表示</Heading>
           <Box>
-            <Heading as="h2">読み込み件数を変更</Heading>
-            <SelectLimit />
-          </Box>
-          <Stack spacing={6}>
-            <Heading as="h2">最新のデータ</Heading>
             {data.byScore && data.byPopularity ? (
               <>
-                <MultipleGraph dataForGraph={data} />
-
-                <Divider my={12} />
+                <MultipleGraph limit={limit} dataForGraph={data} />
               </>
             ) : (
               <Box>FAILED TO FETCH DATA</Box>
             )}
-          </Stack>
-
-          {data.allAnimes.length > 0 && <AnimeList animes={data.allAnimes} />}
+          </Box>
         </Stack>
       </Layout>
     </>
   );
 };
 
-export default AnimesPage;
+export default ViewAll;
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+}: GetServerSidePropsContext) => {
+  const limitQuery = query.limit as string | undefined;
+  const limit = parseInt(limitQuery ?? "100");
   const apiResult: ConvertedForMultiGraph = await fetch(
-    process.env.API_URL + `/vercelapp_v2-getConverted?limit=30`,
+    process.env.API_URL + `/vercelapp_v2-getConverted?limit=${limit}`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",
@@ -75,14 +62,12 @@ export const getStaticProps: GetStaticProps = async () => {
     })
     .catch((e) => console.error(e));
 
-  let revalEnv = parseInt(process.env.REVALIDATE ?? "1800");
   return {
     props: {
+      limit: limit,
       convertedTime: apiResult.lastConverted ?? null,
       lastGSP: new Date().toUTCString(),
       data: apiResult ?? null,
-      revalEnv: revalEnv,
     },
-    revalidate: revalEnv,
   };
 };

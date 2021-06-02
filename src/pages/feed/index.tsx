@@ -18,7 +18,7 @@ async function generateFeedXml() {
 
   let allAnimesForRSS = [];
   const allAnimesForRSSRes = await fetch(
-    `${process.env.API_URL}/vercelapp-getRss`,
+    `${process.env.API_URL}/vercelapp_v2-getRss`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",
