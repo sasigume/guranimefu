@@ -55,70 +55,66 @@ const addFireBase = async (animeJson: AnimeOnFirebase[], subtype: Subtype) => {
   // Subtype is currently 'byscore' only
   let lastUpdateEnv = 'Cloud Functions';
 
-  return await animeJson.map(async (anime: AnimeOnFirebase, n: number) => {
-    let ref = await COLLECTION_V4.doc(`${anime.mal_id}`);
-    let refBackup = await COLLECTION_BACKUP_V4.doc(`${anime.mal_id}`);
-    const basicInfo = {
-      id: anime.mal_id.toString(),
-      color: anime.color ?? '#000',
-      label: anime.title_japanese ?? anime.title,
-    };
+  return await Promise.all(
+    animeJson.map(async (anime: AnimeOnFirebase, n: number) => {
+      let ref = COLLECTION_V4.doc(`${anime.mal_id}`);
+      let refBackup = COLLECTION_BACKUP_V4.doc(`${anime.mal_id}`);
+      const basicInfo = {
+        id: anime.mal_id.toString(),
+        color: anime.color ?? '#000',
+        label: anime.title_japanese ?? anime.title,
+      };
 
-    // These objects can be used directly with chart library like nivo
+      // These objects can be used directly with chart library like nivo
 
-    const chart_line_score = {
-      ...basicInfo,
-      data: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.score }]),
-    };
-    const chart_bump_score = {
-      ...basicInfo,
-      data: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.rank }]),
-    };
-    const fields = {
-      ...anime,
-      lastUpdateEnv: lastUpdateEnv,
-      lastUpdateTime: new Date().toString(),
-      chart_line_score,
-      chart_bump_score,
-    };
-    ref
-      .set(
-        {
-          ...fields,
-        },
-        { merge: true },
-      )
-      .catch((e: any) => {
-        functions.logger.error(`ERROR ON SAVING PRIMARY COLLECTION: ${e}`);
-      })
-      .then((writeResult) => {
-        functions.logger.log(`WriteResult: ${writeResult}`);
-        functions.logger.log(
-          `Updated ${fields.title_japanese}(ID: ${fields.mal_id}/color: ${fields.color})`,
-        );
-        refBackup
-          .set(
-            {
-              ...fields,
-            },
-            { merge: true },
-          )
-          .catch((e: any) => {
-            functions.logger.error(`ERROR ON SAVING BACKUP COLLECTION: ${e}`);
-          })
-          .then(() => {
-            functions.logger.log(
-              `Backup completed for ${fields.title_japanese}(ID: ${fields.mal_id}/color: ${fields.color}), ${subtype} mode`,
-            );
-          });
-      });
-
-    if (animeJson.length - 1 == n) {
-      return true;
-    }
-
-    return false;
-  });
+      const chart_line_score = {
+        ...basicInfo,
+        data: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.score }]),
+      };
+      const chart_bump_score = {
+        ...basicInfo,
+        data: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.rank }]),
+      };
+      const fields = {
+        ...anime,
+        lastUpdateEnv: lastUpdateEnv,
+        lastUpdateTime: new Date().toString(),
+        chart_line_score,
+        chart_bump_score,
+      };
+      return await ref
+        .set(
+          {
+            ...fields,
+          },
+          { merge: true },
+        )
+        .catch((e: any) => {
+          functions.logger.error(`ERROR ON SAVING PRIMARY COLLECTION: ${e}`);
+        })
+        .then((writeResult) => {
+          functions.logger.log(`WriteResult: ${writeResult}`);
+          functions.logger.log(
+            `Updated ${fields.title_japanese}(ID: ${fields.mal_id}/color: ${fields.color})`,
+          );
+          refBackup
+            .set(
+              {
+                ...fields,
+              },
+              { merge: true },
+            )
+            .catch((e: any) => {
+              functions.logger.error(`ERROR ON SAVING BACKUP COLLECTION: ${e}`);
+            })
+            .then(() => {
+              functions.logger.log(
+                `Backup completed for ${fields.title_japanese}(ID: ${fields.mal_id}/color: ${fields.color}), ${subtype} mode`,
+              );
+            });
+        });
+    }),
+  );
 };
 
 /* -------------------------------------------
@@ -130,25 +126,29 @@ const readyToUpdateFirestore = async (limit: number, subtype: Subtype) => {
   const url = 'https://api.jikan.moe/v4/top/anime/';
   functions.logger.info(`Fetch started / url: ${url}`);
   let resultWithColor: AnimeWithColor[] = [];
-  const res = await fetch(url);
-  if (res) {
-    const responseJson: TopApiResponse = await res.json();
+  return await fetch(url).then(async (res: Response) => {
+    if (res) {
+      const responseJson: TopApiResponse = await res.json();
 
-    // limit detail fetch by slicing data
-    resultWithColor = await convertToFirebaseData(responseJson.data);
-    functions.logger.info(`${resultWithColor.length} data converted.`);
+      // limit detail fetch by slicing data
+      resultWithColor = await convertToFirebaseData(responseJson.data);
+      functions.logger.info(`${resultWithColor.length} data converted.`);
 
-    if (enableFirestore) {
-      await addFireBase(resultWithColor, subtype).then(() => {
-        functions.logger.info(`Updating ${resultWithColor.length} doc`);
-      });
+      if (enableFirestore) {
+        return await addFireBase(resultWithColor, subtype)
+          .then(() => {
+            functions.logger.info(`Updating ${resultWithColor.length} doc`);
+          })
+          .catch((e) => {
+            functions.logger.error(e);
+          });
+      } else {
+        functions.logger.info('Ended without saving data to firestore.');
+      }
     } else {
-      functions.logger.info('Ended without saving data to firestore.');
+      functions.logger.warn(`The data could not fetched`);
     }
-  } else {
-    functions.logger.warn(`The data could not fetched`);
-  }
-  return { resultWithColor } as ResultRes;
+  });
 };
 
 /* -------------------------------------------
@@ -159,7 +159,7 @@ const readyToUpdateFirestore = async (limit: number, subtype: Subtype) => {
 const updateFirestore = async (modes: Subtype[]) => {
   const limit = globalLimit;
 
-  return Promise.all(
+  return await Promise.all(
     modes.map(async (mode) => {
       return {
         [mode]: await readyToUpdateFirestore(limit, mode).then((res) => {
@@ -180,7 +180,7 @@ const updateFirestore = async (modes: Subtype[]) => {
       \n\n===
       \n\n## エラー内容
       \n\n${JSON.stringify(e, null, '\t')}`,
-        from: adminConfig.common.notice ?? 'cloudFunctions@ima.icu',
+        from: adminConfig.common.notice ?? 'cloudFunctions@aely.one',
         fromName: 'Heroku jikan-firebase',
         to: adminConfig.common.notice ?? 'sasigume+cloudFunctionsFailed@gmail.com',
       };
