@@ -150,8 +150,8 @@ export type graphData = {
 };
 
 export interface DataForTwoGraph {
-  gdsForBump: graphData[];
-  gdsForLine: graphData[];
+  gdsForBump?: graphData[];
+  gdsForLine?: graphData[];
 }
 export type AnimeForGraph = AnimeOnFirebase;
 export type ConvertedForMultiGraph = {

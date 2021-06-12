@@ -64,7 +64,7 @@ const getConverted = functions
     };
 
     const converted: ConvertedForMultiGraph = ConvertForMultiGraph(results, limit);
-    const sample = converted.byScore.gdsForBump;
+    const sample = converted.byScore.gdsForBump ?? [];
     if (sample[sample.length - 1].id) {
       const lastDay = sample[0].data[sample[0].data.length - 1].x;
 
