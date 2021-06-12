@@ -1,7 +1,7 @@
 // https://zenn.dev/catnose99/articles/c441954a987c24
 
 import { SITE_FULL_URL } from "@/lib/constants";
-import { AnimeForRss } from "@/models/index";
+import { AnimeForRss } from "@/models/jikan_v4";
 import { GetServerSidePropsContext } from "next";
 
 async function generateSitemapXml(): Promise<string> {

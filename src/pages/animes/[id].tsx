@@ -3,7 +3,7 @@ import ErrorPage from "next/error";
 import { Box } from "@chakra-ui/react";
 
 import { Layout } from "@/components/layout";
-import { AnimeForRss, AnimeForSingle } from "@/models/index";
+import { AnimeForRss, AnimeForSingle } from "@/models/jikan_v4";
 import AnimeSingle from "@/components/anime-single";
 
 interface AnimeIDPageProps {
@@ -62,7 +62,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   context.params ? (mal_id = context.params.id) : (mal_id = null);
 
   const apiResult: AnimeForSingle = await fetch(
-    process.env.API_URL + `/vercelapp_v2-getByIdConverted?mal_id=${mal_id}`,
+    process.env.API_URL + `/vercelapp_v4-getByIdConverted?mal_id=${mal_id}`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",
@@ -88,7 +88,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export async function getStaticPaths() {
   const apiResult: AnimeForRss[] = await fetch(
-    process.env.API_URL + `/vercelapp_v2-getRss`,
+    process.env.API_URL + `/vercelapp_v4-getRss`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",

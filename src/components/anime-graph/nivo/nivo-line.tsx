@@ -1,5 +1,4 @@
-import { Subtype } from "@/models/index";
-import { graphData } from "@/models/index";
+import { Subtype, graphData } from "@/models/jikan_v4";
 import { Box, useColorMode } from "@chakra-ui/react";
 
 import { ResponsiveLine } from "@nivo/line";

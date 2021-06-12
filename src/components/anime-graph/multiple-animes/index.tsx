@@ -1,4 +1,4 @@
-import { ConvertedForMultiGraph } from "@/models/index";
+import { ConvertedForMultiGraph } from "@/models/jikan_v4";
 import {
   Badge,
   Box,
@@ -25,7 +25,9 @@ const MultipleGraph = ({ dataForGraph, limit }: AnimeGraphProps) => {
   const MemoScoreBump = useMemo(
     () => (
       <GraphWrapper length={length} title="順位推移">
-        <NivoBump gds={dataForGraph.byScore.gdsForBump} mode="byscore" />
+        {dataForGraph.byScore.gdsForBump && (
+          <NivoBump gds={dataForGraph.byScore.gdsForBump} mode="byscore" />
+        )}
       </GraphWrapper>
     ),
     [dataForGraph]
@@ -33,35 +35,37 @@ const MultipleGraph = ({ dataForGraph, limit }: AnimeGraphProps) => {
   const MemoScoreLine = useMemo(
     () => (
       <GraphWrapper length={length} title="数値順位">
-        <NivoLine gds={dataForGraph.byScore.gdsForLine} mode="byscore" />
+        {dataForGraph.byScore.gdsForLine && (
+          <NivoLine gds={dataForGraph.byScore.gdsForLine} mode="byscore" />
+        )}
       </GraphWrapper>
     ),
     [dataForGraph]
   );
-  const MemoPopBump = useMemo(
-    () => (
-      <GraphWrapper length={length} title="順位推移">
-        <NivoBump
-          gds={dataForGraph.byPopularity.gdsForBump}
-          mode="bypopularity"
-        />
-      </GraphWrapper>
-    ),
-    [dataForGraph]
-  );
-  const MemoPopLine = useMemo(
-    () => (
-      <GraphWrapper length={length} title="数値推移">
-        <NivoLine
-          gds={dataForGraph.byPopularity.gdsForLine}
-          mode="bypopularity"
-        />
-      </GraphWrapper>
-    ),
-    [dataForGraph]
-  );
+  // const MemoPopBump = useMemo(
+  //   () => (
+  //     <GraphWrapper length={length} title="順位推移">
+  //       <NivoBump
+  //         gds={dataForGraph.byPopularity.gdsForBump}
+  //         mode="bypopularity"
+  //       />
+  //     </GraphWrapper>
+  //   ),
+  //   [dataForGraph]
+  // );
+  // const MemoPopLine = useMemo(
+  //   () => (
+  //     <GraphWrapper length={length} title="数値推移">
+  //       <NivoLine
+  //         gds={dataForGraph.byPopularity.gdsForLine}
+  //         mode="bypopularity"
+  //       />
+  //     </GraphWrapper>
+  //   ),
+  //   [dataForGraph]
+  // );
 
-  if (!dataForGraph.byScore || !dataForGraph.byPopularity) {
+  if (!dataForGraph.byScore) {
     return <Box>DATA IS INVALID</Box>;
   } else {
     return (
@@ -77,17 +81,17 @@ const MultipleGraph = ({ dataForGraph, limit }: AnimeGraphProps) => {
         <Tabs>
           <TabList>
             <Tab fontSize="1.8rem">スコア順</Tab>
-            <Tab fontSize="1.8rem">メンバー数順</Tab>
+            {/* <Tab fontSize="1.8rem">メンバー数順</Tab> */}
           </TabList>
           <TabPanels>
             <TabPanel>
               {MemoScoreBump}
               {MemoScoreLine}
             </TabPanel>
-            <TabPanel>
+            {/* <TabPanel>
               {MemoPopBump}
               {MemoPopLine}
-            </TabPanel>
+            </TabPanel>*/}
           </TabPanels>
         </Tabs>
         <Divider my={8} />

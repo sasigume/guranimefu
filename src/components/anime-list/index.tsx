@@ -1,9 +1,9 @@
-import { AnimeForGraph } from "@/models/index";
+import { AnimeForGraphWithLastFetched } from "@/models/jikan_v4";
 import {
   Box,
   SimpleGrid,
   Stack,
-  useDisclosure,
+  //useDisclosure,
   Flex,
   StatNumber,
   Stat,
@@ -12,11 +12,11 @@ import {
 import LinkChakra from "../common/link-chakra";
 
 interface AnimeGraphProps {
-  animes: AnimeForGraph[];
+  animes: AnimeForGraphWithLastFetched[];
 }
 
 const AnimeList = ({ animes }: AnimeGraphProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  //const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (!animes || animes.length < 0) {
     return <Box>DATA IS INVALID</Box>;
@@ -32,7 +32,7 @@ const AnimeList = ({ animes }: AnimeGraphProps) => {
           追跡中のアニメ一覧(スコア順)
         </Box>
         <SimpleGrid spacing={4} minChildWidth="135px">
-          {animes.map((anime: AnimeForGraph) => {
+          {animes.map((anime: AnimeForGraphWithLastFetched) => {
             return (
               <LinkChakra
                 key={anime.mal_id}
@@ -43,7 +43,7 @@ const AnimeList = ({ animes }: AnimeGraphProps) => {
                   <Box roundedTop="lg" overflow="hidden">
                     <img
                       style={{ width: "135px", height: "auto" }}
-                      src={anime.image_url}
+                      src={anime.images.jpg.image_url}
                     />
                   </Box>
                   <Box

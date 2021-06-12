@@ -3,7 +3,7 @@ import { Box, Divider, Heading, Stack } from "@chakra-ui/react";
 
 import { Layout } from "@/components/layout";
 
-import { ConvertedForMultiGraph } from "@/models/index";
+import { ConvertedForMultiGraph } from "@/models/jikan_v4";
 import AnimeList from "@/components/anime-list";
 import { SITE_NAME, SITE_DESC } from "@/lib/constants";
 import MultipleGraph from "@/components/anime-graph/multiple-animes";
@@ -41,7 +41,7 @@ const AnimesPage = ({
           </Box>
           <Stack spacing={6}>
             <Heading as="h2">最新のデータ</Heading>
-            {data.byScore && data.byPopularity ? (
+            {data.byScore ? (
               <>
                 <MultipleGraph dataForGraph={data} />
 
@@ -63,7 +63,7 @@ export default AnimesPage;
 
 export const getStaticProps: GetStaticProps = async () => {
   const apiResult: ConvertedForMultiGraph = await fetch(
-    process.env.API_URL + `/vercelapp_v2-getConverted?limit=30`,
+    process.env.API_URL + `/vercelapp_v4-getConverted?limit=30`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",

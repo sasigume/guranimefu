@@ -1,11 +1,11 @@
 // https://zenn.dev/catnose99/articles/c7754ba6e4adac
 
 import { SITE_DESC, SITE_FULL_URL, SITE_NAME } from "@/lib/constants";
-import { AnimeForRss } from "@/models/index";
+import { AnimeForRss } from "@/models/jikan_v4";
 import { GetServerSidePropsContext } from "next";
 import RSS from "rss";
 
-const TOTAL_LIMIT = parseInt(process.env.TOTAL_PAGINATION ?? "600");
+//const TOTAL_LIMIT = parseInt(process.env.TOTAL_PAGINATION ?? "600");
 
 async function generateFeedXml() {
   const feed = new RSS({

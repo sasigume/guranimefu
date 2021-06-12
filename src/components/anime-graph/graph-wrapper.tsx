@@ -1,4 +1,4 @@
-import { Box, Divider, Flex } from "@chakra-ui/layout";
+import { Box, Divider, Flex } from "@chakra-ui/react";
 import { LayoutProps } from "@chakra-ui/styled-system";
 import { ReactNode, useEffect, useRef } from "react";
 

@@ -3,7 +3,7 @@ import { Box, Heading, Stack } from "@chakra-ui/react";
 
 import { Layout } from "@/components/layout";
 
-import { ConvertedForMultiGraph } from "@/models/index";
+import { ConvertedForMultiGraph } from "@/models/jikan_v4";
 import { SITE_DESC } from "@/lib/constants";
 import MultipleGraph from "@/components/anime-graph/multiple-animes";
 
@@ -28,7 +28,7 @@ const ViewAll = ({ data, convertedTime, lastGSP, limit }: AnimesPageProps) => {
         <Stack spacing={12}>
           <Heading>最大{limit}日分まで表示</Heading>
           <Box>
-            {data.byScore && data.byPopularity ? (
+            {data.byScore ? (
               <>
                 <MultipleGraph limit={limit} dataForGraph={data} />
               </>
@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const limitQuery = query.limit as string | undefined;
   const limit = parseInt(limitQuery ?? "100");
   const apiResult: ConvertedForMultiGraph = await fetch(
-    process.env.API_URL + `/vercelapp_v2-getConverted?limit=${limit}`,
+    process.env.API_URL + `/vercelapp_v4-getConverted?limit=${limit}`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",

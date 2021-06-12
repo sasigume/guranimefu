@@ -1,6 +1,4 @@
-import LinkChakra from "@/components/common/link-chakra";
-import { Subtype } from "@/models/index";
-import { graphData } from "@/models/index";
+import { Subtype, graphData } from "@/models/jikan_v4";
 import { Box } from "@chakra-ui/react";
 
 import { ResponsiveBump } from "@nivo/bump";
