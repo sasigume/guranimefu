@@ -13,5 +13,11 @@ service cloud.firestore {
     match /animeCollection_backup_v2/{document=**} {
       allow read, write: if request.auth != null;
     }
+    match /animeCollection_v4/{document=**} {
+      allow read, write: if request.auth != null;
+    }
+    match /animeCollection_backup_v4/{document=**} {
+      allow read, write: if request.auth != null;
+    }
   }
 }

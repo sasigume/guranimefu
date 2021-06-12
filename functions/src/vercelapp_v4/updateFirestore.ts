@@ -1,0 +1,195 @@
+import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
+import { AdminConfig } from '../models/AdminConfig';
+const adminConfig = functions.config() as AdminConfig;
+const fetch = require('node-fetch');
+const Promise = require('bluebird');
+const ColorHash = require('color-hash');
+const colorHashGen = new ColorHash();
+const dayjs = require('dayjs');
+import { MailJet } from '../lib/mailjet';
+import {
+  AnimeTop,
+  AnimeOnFirebase,
+  Subtype,
+  TopApiResponse,
+  AnimeWithColor,
+} from '../models/mal_v4';
+import { COLLECTION_BACKUP_V4, COLLECTION_V4 } from './common/collections';
+const serverDate = admin.firestore.Timestamp.fromDate(new Date());
+const today = dayjs(serverDate.toDate()).format('YYYY-MM-DD');
+
+let enableFirestore = true;
+//let enableFirestore = false;
+
+const globalLimit = parseInt(adminConfig.vercelapp.limit) ?? 50;
+
+interface ResultRes {
+  resultWithColor: AnimeWithColor[];
+}
+
+/* -------------------------------------------
+// CONVERT DATA TO SAVE IN FIRESTORE
+--------------------------------------------- */
+type ConvertToFirebaseData = (animes: AnimeTop[]) => Promise<AnimeWithColor[]>;
+
+const convertToFirebaseData: ConvertToFirebaseData = async (animes: AnimeTop[]) => {
+  const addColorAndId = (anime: AnimeTop) => {
+    functions.logger.log(`Converting: ${anime.title} (ID: ${anime.mal_id})`);
+    return {
+      // https://github.com/zenozeng/color-hash
+      ...anime,
+      mal_id_string: anime.mal_id.toString(),
+      color: colorHashGen.hex(anime.mal_id),
+    };
+  };
+
+  return animes.map((anime) => addColorAndId(anime));
+};
+
+/* -------------------------------------------
+// UPDATE EACH FIREBASE DOC
+--------------------------------------------- */
+
+const addFireBase = async (animeJson: AnimeOnFirebase[], subtype: Subtype) => {
+  // Subtype is currently 'byscore' only
+  let lastUpdateEnv = 'Cloud Functions';
+
+  return await animeJson.map(async (anime: AnimeOnFirebase, n: number) => {
+    let ref = await COLLECTION_V4.doc(`${anime.mal_id}`);
+    let refBackup = await COLLECTION_BACKUP_V4.doc(`${anime.mal_id}`);
+    const basicInfo = {
+      id: anime.mal_id.toString(),
+      color: anime.color ?? '#000',
+      label: anime.title_japanese ?? anime.title,
+    };
+
+    // These objects can be used directly with chart library like nivo
+
+    const chart_line_score = {
+      ...basicInfo,
+      data: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.score }]),
+    };
+    const chart_bump_score = {
+      ...basicInfo,
+      data: admin.firestore.FieldValue.arrayUnion(...[{ x: today, y: anime.rank }]),
+    };
+    const fields = {
+      ...anime,
+      lastUpdateEnv: lastUpdateEnv,
+      lastUpdateTime: new Date().toString(),
+      chart_line_score,
+      chart_bump_score,
+    };
+    ref
+      .set(
+        {
+          ...fields,
+        },
+        { merge: true },
+      )
+      .catch((e: any) => {
+        functions.logger.error(`ERROR ON SAVING PRIMARY COLLECTION: ${e}`);
+      })
+      .then((writeResult) => {
+        functions.logger.log(`WriteResult: ${writeResult}`);
+        functions.logger.log(
+          `Updated ${fields.title_japanese}(ID: ${fields.mal_id}/color: ${fields.color})`,
+        );
+        refBackup
+          .set(
+            {
+              ...fields,
+            },
+            { merge: true },
+          )
+          .catch((e: any) => {
+            functions.logger.error(`ERROR ON SAVING BACKUP COLLECTION: ${e}`);
+          })
+          .then(() => {
+            functions.logger.log(
+              `Backup completed for ${fields.title_japanese}(ID: ${fields.mal_id}/color: ${fields.color}), ${subtype} mode`,
+            );
+          });
+      });
+
+    if (animeJson.length - 1 == n) {
+      return true;
+    }
+
+    return false;
+  });
+};
+
+/* -------------------------------------------
+// GET DATA AND PASS TO FIREBASE
+--------------------------------------------- */
+
+const readyToUpdateFirestore = async (limit: number, subtype: Subtype) => {
+  // Seems like only "by score" is currently supported
+  const url = 'https://api.jikan.moe/v4/top/anime/';
+  functions.logger.info(`Fetch started / url: ${url}`);
+  let resultWithColor: AnimeWithColor[] = [];
+  const res = await fetch(url);
+  if (res) {
+    const responseJson: TopApiResponse = await res.json();
+
+    // limit detail fetch by slicing data
+    resultWithColor = await convertToFirebaseData(responseJson.data);
+    functions.logger.info(`${resultWithColor.length} data converted.`);
+
+    if (enableFirestore) {
+      await addFireBase(resultWithColor, subtype).then(() => {
+        functions.logger.info(`Updating ${resultWithColor.length} doc`);
+      });
+    } else {
+      functions.logger.info('Ended without saving data to firestore.');
+    }
+  } else {
+    functions.logger.warn(`The data could not fetched`);
+  }
+  return { resultWithColor } as ResultRes;
+};
+
+/* -------------------------------------------
+// EXECUTE EACH UPDATE SEQUENTIALLY
+--------------------------------------------- */
+
+// https://stackoverflow.com/a/34820791
+const updateFirestore = async (modes: Subtype[]) => {
+  const limit = globalLimit;
+
+  return Promise.all(
+    modes.map(async (mode) => {
+      return {
+        [mode]: await readyToUpdateFirestore(limit, mode).then((res) => {
+          if (res) {
+            functions.logger.info(`FINISHED DATA CONVERTING FOR: ${mode}`);
+            return res;
+          } else {
+            return null;
+          }
+        }),
+      };
+    }),
+  )
+    .catch((e: any) => {
+      let options = {
+        title: `Firestoreデータ更新エラー`,
+        content: `${serverDate.toDate()}のデータ更新で、readyToUpdateFirestore部分でエラーが発生しました。
+      \n\n===
+      \n\n## エラー内容
+      \n\n${JSON.stringify(e, null, '\t')}`,
+        from: adminConfig.common.notice ?? 'cloudFunctions@ima.icu',
+        fromName: 'Heroku jikan-firebase',
+        to: adminConfig.common.notice ?? 'sasigume+cloudFunctionsFailed@gmail.com',
+      };
+      MailJet(options);
+    })
+    .then((res: ResultRes) => {
+      functions.logger.log(`COMPLETED!`);
+      return res;
+    });
+};
+
+export default updateFirestore;
