@@ -1,4 +1,4 @@
-import { AnimeForGraph, ConvertedForMultiGraph, PreConvertV4 } from '../..//models/mal_v4';
+import { AnimeOnFirebase, ConvertedForMultiGraph, PreConvertV4 } from '../..//models/mal_v4';
 import dayjs from 'dayjs';
 
 import { GraphDatasForBump, GraphDatasForLine } from './graph-data-parser';
@@ -13,7 +13,7 @@ const ConvertForMultiGraph: Converter = (fetchedData, slice) => {
   for (let item of allAnimeArray) {
     animesWithoutDuplicate[item.mal_id] = item;
   }
-  const resultWithoutDuplicate = Object.values(animesWithoutDuplicate) as AnimeForGraph[];
+  const resultWithoutDuplicate = Object.values(animesWithoutDuplicate) as AnimeOnFirebase[];
 
   const allAnimes = resultWithoutDuplicate.sort((a, b) =>
     a.score > b.score ? -1 : b.score > a.score ? 1 : 0,

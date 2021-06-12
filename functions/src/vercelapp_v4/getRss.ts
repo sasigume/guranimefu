@@ -6,7 +6,7 @@ import 'dayjs/locale/ja';
 dayjs.locale('ja');
 
 import { addFetchTime } from './common/add-fetch-time';
-import { AnimeForGraph, Subtype, ConvertedForMultiGraph, AnimeForRss } from '../models/mal_v4';
+import { Subtype, ConvertedForMultiGraph, AnimeForRss, AnimeOnFirebase } from '../models/mal_v4';
 import ConvertForRss from '../lib/converter_v4/for-rss';
 import { COLLECTION_V4 } from './common/collections';
 
@@ -29,11 +29,11 @@ const getAnimesArray = async (mode: Subtype) => {
 
   const animesData = await Promise.all(
     snapshot.docs.map(async (doc) => {
-      const animeOnFirebase = doc.data() as AnimeForGraph;
+      const animeOnFirebase = doc.data() as AnimeOnFirebase;
       return animeOnFirebase;
     }),
   );
-  const animesArray = animesData.map((anime: AnimeForGraph) => {
+  const animesArray = animesData.map((anime: AnimeOnFirebase) => {
     return addFetchTime(anime);
   });
 

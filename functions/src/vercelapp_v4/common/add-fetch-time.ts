@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
-import { AnimeForGraph, AnimeForGraphWithLastFetched } from '../../models/mal_v4';
+import { AnimeOnFirebase, AnimeForGraphWithLastFetched } from '../../models/mal_v4';
 
-export const addFetchTime = (anime: AnimeForGraph): AnimeForGraphWithLastFetched => {
+export const addFetchTime = (anime: AnimeOnFirebase): AnimeForGraphWithLastFetched => {
   return {
     ...anime,
     lastFetched: admin.firestore.Timestamp.now(),

@@ -1,4 +1,4 @@
-import { AnimeForGraph, AnimeForRss, PreConvertV4 } from '../../models/mal_v4';
+import { AnimeOnFirebase, AnimeForRss, PreConvertV4 } from '../../models/mal_v4';
 
 type Converter = (fetchedData: PreConvertV4) => AnimeForRss[];
 
@@ -10,7 +10,7 @@ const ConvertForRss: Converter = (fetchedData) => {
   for (let item of allAnimeArray) {
     animesWithoutDuplicate[item.mal_id_string] = item;
   }
-  const resultWithoutDuplicate = Object.values(animesWithoutDuplicate) as AnimeForGraph[];
+  const resultWithoutDuplicate = Object.values(animesWithoutDuplicate) as AnimeOnFirebase[];
 
   const sorted = resultWithoutDuplicate.sort((a, b) =>
     a.score > b.score ? -1 : b.score > a.score ? 1 : 0,

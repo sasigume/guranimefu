@@ -153,19 +153,18 @@ export interface DataForTwoGraph {
   gdsForBump?: graphData[];
   gdsForLine?: graphData[];
 }
-export type AnimeForGraph = AnimeOnFirebase;
 export type ConvertedForMultiGraph = {
   sampleLength: number;
   lastConverted: Date;
   byScore: DataForTwoGraph;
-  allAnimes: AnimeForGraph[];
+  allAnimes: AnimeOnFirebase[];
 };
 
 export interface NumberOfDate {
   [key: string]: number;
 }
 
-export interface AnimeForGraphWithLastFetched extends AnimeForGraph {
+export interface AnimeForGraphWithLastFetched extends AnimeOnFirebase {
   lastFetched?: any;
 }
 
@@ -175,7 +174,7 @@ export interface AnimeForSingle extends AnimeForGraphWithLastFetched {
 
 export interface PreConvertV4 {
   lastFetched: any;
-  animesByScore: AnimeForGraph[];
+  animesByScore: AnimeOnFirebase[];
 }
 
 export interface AnimeForRss {

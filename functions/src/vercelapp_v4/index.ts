@@ -23,7 +23,7 @@ exports.updateFirestore = functions
   .onRun((context: any) => {
     functions.logger.info('AUTOMATICALLY STARTED JIKAN-FIREBASE SCRIPT');
 
-    updateFirestore(['byscore'])
+    updateFirestore()
       .then(() => {
         functions.logger.info('Auto update complete');
       })
@@ -46,7 +46,7 @@ exports.updateFirestoreManually = functions
     } else {
       functions.logger.info('MANUALLY STARTED JIKAN-FIREBASE SCRIPT');
 
-      updateFirestore(['byscore'])
+      updateFirestore()
         .then(() => {
           response.status(200).json({
             message: 'Update complete',

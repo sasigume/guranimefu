@@ -7,7 +7,7 @@ dayjs.locale('ja');
 
 import { addFetchTime } from './common/add-fetch-time';
 import ConvertForMultiGraph from '../lib/converter_v4/for-multi-graph';
-import { AnimeForGraph, Subtype, ConvertedForMultiGraph } from '../models/mal_v4';
+import { Subtype, ConvertedForMultiGraph, AnimeOnFirebase } from '../models/mal_v4';
 import { COLLECTION_V4 } from './common/collections';
 
 interface Message {
@@ -15,12 +15,12 @@ interface Message {
 }
 
 const getAnimesArray = async (mode: Subtype) => {
-  let order = 'rankOfScore';
+  let order = 'rank';
   if (mode == 'bypopularity') {
     order = 'rankOfPopularity';
   }
   if (mode == 'byscore') {
-    order = 'rankOfScore';
+    order = 'rank';
   }
 
   const query = COLLECTION_V4.orderBy(order).limit(50);
@@ -29,11 +29,11 @@ const getAnimesArray = async (mode: Subtype) => {
 
   const animesData = await Promise.all(
     snapshot.docs.map(async (doc) => {
-      const animeOnFirebase = doc.data() as AnimeForGraph;
+      const animeOnFirebase = doc.data() as AnimeOnFirebase;
       return animeOnFirebase;
     }),
   );
-  const animesArray = animesData.map((anime: AnimeForGraph) => {
+  const animesArray = animesData.map((anime: AnimeOnFirebase) => {
     return addFetchTime(anime);
   });
 

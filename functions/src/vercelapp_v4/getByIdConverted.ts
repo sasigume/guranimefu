@@ -4,7 +4,7 @@ const adminConfig = functions.config() as AdminConfig;
 const dayjs = require('dayjs');
 import 'dayjs/locale/ja';
 dayjs.locale('ja');
-import { AnimeForGraph, AnimeForSingle } from '../models/mal_v4';
+import { AnimeForSingle, AnimeOnFirebase } from '../models/mal_v4';
 import { addFetchTime } from './common/add-fetch-time';
 import ConvertForSingle from '../lib/converter_v4/for-single';
 import { COLLECTION_V4 } from './common/collections';
@@ -28,7 +28,7 @@ const getByIdConverted = functions
 
     const snapshot = await query.get();
 
-    const animeData = snapshot.data() as AnimeForGraph;
+    const animeData = snapshot.data() as AnimeOnFirebase;
 
     const result = addFetchTime(animeData);
 
