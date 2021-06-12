@@ -15,29 +15,24 @@ interface Message {
 }
 
 const getAnimesArray = async (mode: Subtype) => {
-  let order = 'rankOfScore';
+  let order = 'rank';
   if (mode == 'bypopularity') {
     order = 'rankOfPopularity';
   }
   if (mode == 'byscore') {
-    order = 'rankOfScore';
+    order = 'rank';
   }
 
   const query = COLLECTION_V4.orderBy(order).limit(50);
 
   const snapshot = await query.get();
 
-  const animesData = await Promise.all(
+  return await Promise.all(
     snapshot.docs.map(async (doc) => {
       const animeOnFirebase = doc.data() as AnimeOnFirebase;
-      return animeOnFirebase;
+      return addFetchTime(animeOnFirebase);
     }),
   );
-  const animesArray = animesData.map((anime: AnimeOnFirebase) => {
-    return addFetchTime(anime);
-  });
-
-  return animesArray;
 };
 
 const getRss = functions
@@ -52,17 +47,20 @@ const getRss = functions
     }
 
     response.setHeader('Cache-Control', `public, s-maxage=3600, stale-while-revalidate=86400`);
+    const animes = await getAnimesArray('byscore');
     const results = {
       lastFetched: dayjs().toString(),
       // animesByPopularity: await getAnimesArray('bypopularity'),
-      animesByScore: await getAnimesArray('byscore'),
+      animesByScore: animes ?? [],
     };
 
     const converted: AnimeForRss[] = ConvertForRss(results);
 
-    if (converted.length > 0) return response.status(200).json(converted);
-
-    return response.status(500).json({ message: 'Error occured' });
+    if (converted.length > 0) {
+      return response.status(200).json(converted);
+    } else {
+      return response.status(500).json({ message: 'Error occured' });
+    }
   });
 
 export default getRss;

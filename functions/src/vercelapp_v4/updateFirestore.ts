@@ -78,7 +78,7 @@ const addFireBase = async (animeJson: AnimeOnFirebase[], subtype: Subtype) => {
       const fields = {
         ...anime,
         lastUpdateEnv: lastUpdateEnv,
-        lastUpdateTime: new Date().toString(),
+        lastUpdateTime: dayjs().toString(),
         chart_line_score,
         chart_bump_score,
       };

@@ -1,9 +1,12 @@
-import { AnimeOnFirebase, AnimeForRss, PreConvertV4 } from '../../models/mal_v4';
+import { AnimeOnFirebase, AnimeForRss } from '../../models/mal_v4';
 
-type Converter = (fetchedData: PreConvertV4) => AnimeForRss[];
+type Converter = (fetchedData: {
+  lastFetched: any;
+  animesByScore: AnimeOnFirebase[];
+}) => AnimeForRss[];
 
 const ConvertForRss: Converter = (fetchedData) => {
-  let allAnimeArray = [...fetchedData.animesByScore];
+  let allAnimeArray = fetchedData.animesByScore;
 
   // REMOVE SAME ANIMES IN TWO RANKING
   let animesWithoutDuplicate = {} as any;
