@@ -6,15 +6,15 @@ import 'dayjs/locale/ja';
 dayjs.locale('ja');
 
 import { addFetchTime } from './common/add-fetch-time';
-import ConvertForMultiGraph from '../lib/converter_v4/for-multi-graph';
-import { Subtype, ConvertedForMultiGraph, AnimeOnFirebase } from '../models/mal_v4';
+import ConvertForMultiGraph from '../lib/converter_apiv4_appv2/for-multi-graph';
+import { ConvertedForMultiGraph, AnimeOnFirebase } from '../models/apiv4_appv2';
 import { COLLECTION_APIV4_APPV2 } from './common/collections';
 
 interface Message {
   message: string;
 }
 
-const getAnimesArray = async (mode: Subtype) => {
+const getAnimesArray = async () => {
   const query = COLLECTION_APIV4_APPV2.orderBy('rank').limit(50);
 
   const snapshot = await query.get();
@@ -51,7 +51,7 @@ const getConverted = functions
 
     const results = {
       lastFetched: dayjs().toString(),
-      animesByScore: await getAnimesArray('byscore'),
+      animesByScore: await getAnimesArray(),
     };
 
     const converted: ConvertedForMultiGraph = ConvertForMultiGraph(results, limit);

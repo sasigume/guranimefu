@@ -6,8 +6,8 @@ import 'dayjs/locale/ja';
 dayjs.locale('ja');
 
 import { addFetchTime } from './common/add-fetch-time';
-import { Subtype, ConvertedForMultiGraph, AnimeForRss, AnimeOnFirebase } from '../models/mal_v4';
-import ConvertForRss from '../lib/converter_v4/for-rss';
+import { ConvertedForMultiGraph, AnimeForRss, AnimeOnFirebase } from '../models/apiv4_appv2';
+import ConvertForRss from '../lib/converter_apiv4_appv2/for-rss';
 import { COLLECTION_APIV4_APPV2 } from './common/collections';
 
 interface Message {

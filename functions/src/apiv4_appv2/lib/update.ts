@@ -11,10 +11,9 @@ import { MailJet } from '../../lib/mailjet';
 import {
   AnimeTop,
   AnimeOnFirebase,
-  Subtype,
   TopApiResponse,
   AnimeWithColor,
-} from '../../models/mal_v4';
+} from '../../models/apiv4_appv2';
 import { COLLECTION_APIV4_APPV2, COLLECTION_APIV4_APPV2_BACKUP } from '../common/collections';
 const serverDate = admin.firestore.Timestamp.fromDate(new Date());
 const today = dayjs(serverDate.toDate()).format('YYYY-MM-DD');
@@ -55,12 +54,11 @@ const convertToFirebaseData: ConvertToFirebaseData = async (animes: AnimeTop[]) 
  * @param {Subtype} subtype ランキング種類
  * @returns {void} - ログを残す
  */
-const addFireBase = async (animeJson: AnimeOnFirebase[], subtype: Subtype) => {
-  // Subtype is currently 'byscore' only
+const addFireBase = async (animeJson: AnimeOnFirebase[]) => {
   let lastUpdateEnv = 'Cloud Functions';
 
   return await Promise.all(
-    animeJson.map(async (anime: AnimeOnFirebase, n: number) => {
+    animeJson.map(async (anime: AnimeOnFirebase) => {
       let ref = COLLECTION_APIV4_APPV2.doc(`${anime.mal_id}`);
       let refBackup = COLLECTION_APIV4_APPV2_BACKUP.doc(`${anime.mal_id}`);
       const basicInfo = {
@@ -113,7 +111,7 @@ const addFireBase = async (animeJson: AnimeOnFirebase[], subtype: Subtype) => {
             })
             .then(() => {
               functions.logger.log(
-                `Backup completed for ${fields.title_japanese}(ID: ${fields.mal_id}/color: ${fields.color}), ${subtype} mode`,
+                `Backup completed for ${fields.title_japanese}(ID: ${fields.mal_id}/color: ${fields.color})`,
               );
             });
         });
@@ -127,7 +125,7 @@ const addFireBase = async (animeJson: AnimeOnFirebase[], subtype: Subtype) => {
  * @param {Subtype} subtype ランキング種類
  * @returns {void} - ログを残す
  */
-const readyToUpdateFirestore = async (page: number, subtype: Subtype) => {
+const readyToUpdateFirestore = async (page: number) => {
   // Seems like only "by score" is currently supported
   const url = `https://api.jikan.moe/v4/top/anime?page=${page}`;
   functions.logger.info(`Fetch started / url: ${url}`);
@@ -141,7 +139,7 @@ const readyToUpdateFirestore = async (page: number, subtype: Subtype) => {
       functions.logger.info(`${resultWithColor.length} data converted.`);
 
       if (enableFirestore) {
-        return await addFireBase(resultWithColor, subtype)
+        return await addFireBase(resultWithColor)
           .then(() => {
             functions.logger.info(`Updating ${resultWithColor.length} doc`);
           })
@@ -167,7 +165,7 @@ export const callApiPages = async () => {
 
   return await Promise.all(
     pages.map(async (p) => {
-      return await readyToUpdateFirestore(p, 'byscore').then((res) => {
+      return await readyToUpdateFirestore(p).then((res) => {
         if (res) {
           functions.logger.info(`FINISHED DATA CONVERTING (PAGE ${p})`);
           return res;

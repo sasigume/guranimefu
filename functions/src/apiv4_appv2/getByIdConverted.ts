@@ -4,9 +4,9 @@ const adminConfig = functions.config() as AdminConfig;
 const dayjs = require('dayjs');
 import 'dayjs/locale/ja';
 dayjs.locale('ja');
-import { AnimeForSingle, AnimeOnFirebase } from '../models/mal_v4';
+import { AnimeForSingle, AnimeOnFirebase } from '../models/apiv4_appv2';
 import { addFetchTime } from './common/add-fetch-time';
-import ConvertForSingle from '../lib/converter_v4/for-single';
+import ConvertForSingle from '../lib/converter_apiv4_appv2/for-single';
 import { COLLECTION_APIV4_APPV2 } from './common/collections';
 interface Message {
   message: string;

@@ -1,9 +1,4 @@
-// 2021-06-12 Started collecting Jikan v4 data
-// https://docs.api.jikan.moe/
-
-// blank means sort by score
-export type Subtype = 'bypopularity' | 'byscore' | 'movie' | 'upcoming' | '';
-
+// 2021年8月29日: 人気順は存在しないことにした
 export interface Pagination {
   last_visible_page: number;
   has_next_page: boolean;
@@ -130,9 +125,7 @@ export interface AnimeOnFirebase extends AnimeWithColor {
   lastUpdateEnv?: string;
   lastUpdateTime?: string;
   chart_line_score?: graphData;
-  chart_line_popularity?: graphData;
   chart_bump_score?: graphData;
-  chart_bump_popularity?: graphData;
 }
 
 export type GraphType = 'line' | 'bump';

@@ -1,6 +1,6 @@
-export type Subtype = "byscore" | "bypopularity";
+export type Subtype = 'byscore' | 'bypopularity';
 
-export type GraphType = "line" | "bump";
+export type GraphType = 'line' | 'bump';
 
 export interface Pos {
   x: string;
@@ -22,7 +22,6 @@ export interface ConvertedForMultiGraph {
   sampleLength: number;
   lastConverted: Date;
   byScore: DataForTwoGraph;
-  byPopularity: DataForTwoGraph;
   allAnimes: AnimeForGraph[];
 }
 
@@ -47,9 +46,7 @@ export interface AnimeForGraph {
   rankOfPopularity: number;
   rankOfScore: number;
   chart_line_score: graphData;
-  chart_line_popularity: graphData;
   chart_bump_score: graphData;
-  chart_bump_popularity: graphData;
   color: string;
 }
 

@@ -1,14 +1,5 @@
 import { ConvertedForMultiGraph } from '@/models/index';
-import {
-  Badge,
-  Box,
-  Divider,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from '@chakra-ui/react';
+import { Badge, Box, Divider } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import GraphWrapper from '../graph-wrapper';
 import NivoBump from '../nivo/nivo-bump';
@@ -38,30 +29,8 @@ const MultipleGraph = ({ dataForGraph, limit }: AnimeGraphProps) => {
     ),
     [dataForGraph]
   );
-  const MemoPopBump = useMemo(
-    () => (
-      <GraphWrapper length={length} title="順位推移">
-        <NivoBump
-          gds={dataForGraph.byPopularity.gdsForBump}
-          mode="bypopularity"
-        />
-      </GraphWrapper>
-    ),
-    [dataForGraph]
-  );
-  const MemoPopLine = useMemo(
-    () => (
-      <GraphWrapper length={length} title="数値推移">
-        <NivoLine
-          gds={dataForGraph.byPopularity.gdsForLine}
-          mode="bypopularity"
-        />
-      </GraphWrapper>
-    ),
-    [dataForGraph]
-  );
 
-  if (!dataForGraph.byScore || !dataForGraph.byPopularity) {
+  if (!dataForGraph.byScore) {
     return <Box>DATA IS INVALID</Box>;
   } else {
     return (
@@ -75,22 +44,10 @@ const MultipleGraph = ({ dataForGraph, limit }: AnimeGraphProps) => {
             </Badge>
           )}
         </Box>
-        <Tabs>
-          <TabList>
-            <Tab fontSize="1.8rem">スコア順</Tab>
-            <Tab fontSize="1.8rem">メンバー数順</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              {MemoScoreBump}
-              {MemoScoreLine}
-            </TabPanel>
-            <TabPanel>
-              {MemoPopBump}
-              {MemoPopLine}
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        <Box>
+          {MemoScoreBump}
+          {MemoScoreLine}
+        </Box>
         <Divider my={8} />
         <Box fontSize="1rem">
           ※JikanAPIが1日データをキャッシュするので、取得タイミングのせいでグラフが平らになっているかもしれません。
