@@ -43,6 +43,7 @@ yarn-error.log*
 
 # firebase
 /functions/serviceAccountKey.json
+/functions/.serviceAccountKey.json
 /functions/.env.yaml
 /functions/.runtimeconfig.json
 
