@@ -1,13 +1,8 @@
-import { AnimeForGraph, AnimeForSingle } from '@/models/index';
+import { AnimeForSingle } from '@/models/index';
 import { Button } from '@chakra-ui/button';
 import { Box, Divider, Flex, List, ListItem } from '@chakra-ui/layout';
-import {
-  Stat,
-  StatArrow,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
-} from '@chakra-ui/stat';
+import { Stat, StatHelpText, StatLabel, StatNumber } from '@chakra-ui/stat';
+import Image from 'next/image';
 import dayjs from 'dayjs';
 import SingleAnimeGraph from '../anime-graph/single-anime';
 import LinkChakra from '../common/link-chakra';
@@ -28,7 +23,12 @@ const AnimeSingle = ({ anime }: Props) => {
       </Box>
       <Flex direction={{ base: 'column', md: 'row' }}>
         <Box mr={8}>
-          <img style={{ width: 'full' }} src={anime.images.jpg.image_url} />
+          <Image
+            width="424px"
+            height="600px"
+            src={anime.images.jpg.large_image_url ?? anime.images.jpg.image_url}
+            alt={`${anime.title_japanese}の画像`}
+          />
         </Box>
         <Box>
           <Stat my={6}>

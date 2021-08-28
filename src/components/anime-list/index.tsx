@@ -9,6 +9,7 @@ import {
   Stat,
   StatHelpText,
 } from '@chakra-ui/react';
+import Image from 'next/image';
 import LinkChakra from '../common/link-chakra';
 
 interface AnimeGraphProps {
@@ -31,7 +32,7 @@ const AnimeList = ({ animes }: AnimeGraphProps) => {
         <Box mb={6} as="h2" fontSize="2rem">
           追跡中のアニメ一覧(スコア順)
         </Box>
-        <SimpleGrid spacing={4} minChildWidth="135px">
+        <SimpleGrid spacing={4} minChildWidth="225px">
           {animes.map((anime: AnimeForGraph) => {
             return (
               <LinkChakra
@@ -39,11 +40,14 @@ const AnimeList = ({ animes }: AnimeGraphProps) => {
                 mb={12}
                 href={`/animes/${anime.mal_id}`}
               >
-                <Flex h="full" position="relative" w="135px" key={anime.mal_id}>
-                  <Box roundedTop="lg" overflow="hidden">
-                    <img
-                      style={{ width: '135px', height: 'auto' }}
+                <Flex h="full" position="relative" w="225px" key={anime.mal_id}>
+                  <Box bg="white" roundedTop="lg" overflow="hidden">
+                    <Image
+                      width="225px"
+                      height="318px"
+                      objectFit="cover"
                       src={anime.images.jpg.image_url}
+                      alt={`${anime.title_japanese}の画像`}
                     />
                   </Box>
                   <Box
@@ -51,8 +55,8 @@ const AnimeList = ({ animes }: AnimeGraphProps) => {
                     bottom={-30}
                     p={2}
                     w="full"
-                    shadow="lg"
                     bg="white"
+                    shadow="lg"
                     position="absolute"
                   >
                     <Stat fontWeight="bold">

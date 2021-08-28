@@ -10,4 +10,7 @@ module.exports = {
     VERCEL_GIT_COMMIT_REF: process.env.VERCEL_GIT_COMMIT_REF,
     FUNCTION_AUTH: process.env.FUNCTION_AUTH,
   },
+  images: {
+    domains: ['cdn.myanimelist.net'],
+  },
 };

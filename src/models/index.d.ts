@@ -47,10 +47,10 @@ export interface AnimeForGraph {
     url?: string;
     embed_url?: string;
     images: {
-      image_url?: string;
+      image_url?: string; // 135x318
       small_image_url?: string;
       medium_image_url?: string;
-      large_image_url?: string;
+      large_image_url?: string; // 424x600
       maximum_image_url?: string;
     };
   };
