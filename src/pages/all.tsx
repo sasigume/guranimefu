@@ -9,7 +9,7 @@ import MultipleGraph from '@/components/anime-graph/multiple-animes';
 
 interface AnimesPageProps {
   data: ConvertedForMultiGraph;
-  convertedTime: string;
+  convertedTime: Date;
   lastGSP: string;
   limit: number;
 }
