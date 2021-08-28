@@ -12,8 +12,8 @@ interface LayoutProps {
   desc: string;
   children: ReactNode;
   debugInfo?: {
-    lastGSP: Date;
-    lastFetched: string;
+    lastGSP: string;
+    lastFetched: Date;
     revalidate?: number;
   };
   isIndex?: boolean;
@@ -61,7 +61,10 @@ export const Layout = ({
           デバッグ(revalidate): {debugInfo?.revalidate ?? 'ISRではありません'}
         </Box>
         <Box>デバッグ(lastGSP): {debugInfo?.lastGSP ?? null}</Box>
-        <Box>デバッグ(lastFetched): {debugInfo?.lastFetched ?? null}</Box>
+        <Box>
+          デバッグ(lastFetched):{' '}
+          {JSON.stringify(debugInfo?.lastFetched) ?? null}
+        </Box>
       </LayoutDrawer>
 
       <CTA />

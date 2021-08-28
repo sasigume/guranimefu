@@ -12,7 +12,7 @@ import SelectLimit from '@/components/gui/select-limit';
 interface AnimesPageProps {
   data: ConvertedForMultiGraph;
   convertedTime: string;
-  lastGSP: Date;
+  lastGSP: string;
   revalEnv: number;
 }
 
