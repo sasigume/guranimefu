@@ -50,7 +50,7 @@ const getRss = functions
     const animes = await getAnimesArray('byscore');
     const results = {
       lastFetched: dayjs().toString(),
-      // animesByPopularity: await getAnimesArray('bypopularity'),
+      animesByPopularity: await getAnimesArray('bypopularity'),
       animesByScore: animes ?? [],
     };
 

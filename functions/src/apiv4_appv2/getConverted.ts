@@ -59,7 +59,7 @@ const getConverted = functions
 
     const results = {
       lastFetched: dayjs().toString(),
-      //animesByPopularity: await getAnimesArray('bypopularity'),
+      animesByPopularity: await getAnimesArray('bypopularity'),
       animesByScore: await getAnimesArray('byscore'),
     };
 
