@@ -1,0 +1,27 @@
+name: push to bitbucket
+on: push
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+          ref: 'public'
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          name: bitbucket-key
+          known_hosts: ${{ secrets.ssh }}
+          # https://github.com/shimataro/ssh-key-action/issues/142
+          config: |
+            Host bitbucket.org
+              IdentityFile ~/.ssh/bitbucket-key
+      - run: echo "" >> ~/.ssh/known_hosts
+      - run: |
+          git remote add bitbucket git@bitbucket.org:sasigume/guranimefu.git
+          git config --global user.email "sasigume@gmail.com"
+          git config --global user.name "sasigume"
+          git checkout main
+          git push -u bitbucket main
