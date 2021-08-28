@@ -13,7 +13,7 @@ jobs:
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           name: bitbucket-key
-          known_hosts: ${{ secrets.ssh }}
+          known_hosts: ${{ secrets.BITBUCKET_KNOWN_HOSTS }}
           # https://github.com/shimataro/ssh-key-action/issues/142
           config: |
             Host bitbucket.org
