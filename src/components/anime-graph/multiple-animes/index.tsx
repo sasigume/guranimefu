@@ -19,7 +19,7 @@ const MultipleGraph = ({ dataForGraph, limit }: AnimeGraphProps) => {
         <NivoBump gds={dataForGraph.byScore.gdsForBump} mode="byscore" />
       </GraphWrapper>
     ),
-    [dataForGraph]
+    [length, dataForGraph.byScore.gdsForBump]
   );
   const MemoScoreLine = useMemo(
     () => (
@@ -27,7 +27,7 @@ const MultipleGraph = ({ dataForGraph, limit }: AnimeGraphProps) => {
         <NivoLine gds={dataForGraph.byScore.gdsForLine} mode="byscore" />
       </GraphWrapper>
     ),
-    [dataForGraph]
+    [length, dataForGraph.byScore.gdsForLine]
   );
 
   if (!dataForGraph.byScore) {
