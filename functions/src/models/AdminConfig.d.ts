@@ -7,12 +7,6 @@ export interface AdminConfig {
     wait: string;
   };
 
-  hatenablog: {
-    sender: string;
-    limit: string;
-    to: string;
-  };
-
   mailjet: {
     key: string;
     secret: string;
@@ -20,7 +14,6 @@ export interface AdminConfig {
 
   vercelapp: {
     auth: string;
-    limit: string;
     brokendata: string;
   };
 }
