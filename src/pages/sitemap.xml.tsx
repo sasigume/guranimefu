@@ -1,8 +1,8 @@
 // https://zenn.dev/catnose99/articles/c441954a987c24
 
-import { SITE_FULL_URL } from "@/lib/constants";
-import { AnimeForRss } from "@/models/index";
-import { GetServerSidePropsContext } from "next";
+import { SITE_FULL_URL } from '@/lib/constants';
+import { AnimeForRss } from '@/models/index';
+import { GetServerSidePropsContext } from 'next';
 
 async function generateSitemapXml(): Promise<string> {
   let xml = `<?xml version="1.0" encoding="UTF-8"?>`;
@@ -10,10 +10,10 @@ async function generateSitemapXml(): Promise<string> {
 
   let allAnimesForRSS = [];
   const allAnimesForRSSRes = await fetch(
-    `${process.env.API_URL}/vercelapp_v2-getRss`,
+    `${process.env.API_URL}/apiv4_appv2-getRss`,
     {
       headers: {
-        authorization: process.env.FUNCTION_AUTH ?? "",
+        authorization: process.env.FUNCTION_AUTH ?? '',
       },
     }
   );
@@ -42,14 +42,14 @@ export const getServerSideProps = async ({
 
   res.statusCode = 200;
   res.setHeader(
-    "Cache-Control",
+    'Cache-Control',
     `s-maxage=${revalidate}, stale-while-revalidate`
   );
-  res.setHeader("Content-Type", "text/xml");
+  res.setHeader('Content-Type', 'text/xml');
   res.end(xml);
 
   console.info(
-    "\x1b[36m%s\x1b[0m",
+    '\x1b[36m%s\x1b[0m',
     `Sitemap ready, cache expires in ${revalidate}s`
   );
 

@@ -1,23 +1,11 @@
-import {
-  Flex,
-  useColorMode,
-  FlexProps,
-  Box,
-  Center,
-  Container,
-  Text,
-  Button,
-  Link,
-} from "@chakra-ui/react";
-import Head from "next/head";
-import { ReactNode } from "react";
-import { Hero } from "./Hero";
-import LayoutDrawer from "./layout-drawer";
-import { CTA } from "./CTA";
-import { DarkModeSwitch } from "../common/DarkModeSwitch";
-import LinkChakra from "../common/link-chakra";
-import Meta from "./meta";
-import { SITE_NAME } from "@/lib/constants";
+import { Flex, useColorMode, Box, Container } from '@chakra-ui/react';
+import Head from 'next/head';
+import { ReactNode } from 'react';
+import { Hero } from './Hero';
+import LayoutDrawer from './layout-drawer';
+import { CTA } from './CTA';
+import Meta from './meta';
+import { SITE_NAME } from '@/lib/constants';
 
 interface LayoutProps {
   title: string;
@@ -40,12 +28,12 @@ export const Layout = ({
 }: LayoutProps) => {
   const { colorMode } = useColorMode();
 
-  const bgColor = { light: "gray.50", dark: "gray.900" };
+  const bgColor = { light: 'gray.50', dark: 'gray.900' };
 
-  const color = { light: "black", dark: "white" };
+  const color = { light: 'black', dark: 'white' };
 
   return (
-    <Box style={{ width: "100vw" }}>
+    <Box style={{ width: '100vw' }}>
       <Meta title={title} desc={desc} />
       <Flex
         w="full"
@@ -58,7 +46,7 @@ export const Layout = ({
         <Head>
           <title>
             {title}
-            {!isIndex ? " | " + SITE_NAME : ""}
+            {!isIndex ? ' | ' + SITE_NAME : ''}
           </title>
         </Head>
         <Container maxW="container.xl" pb={8}>
@@ -70,7 +58,7 @@ export const Layout = ({
 
       <LayoutDrawer>
         <Box>
-          デバッグ(revalidate): {debugInfo?.revalidate ?? "ISRではありません"}
+          デバッグ(revalidate): {debugInfo?.revalidate ?? 'ISRではありません'}
         </Box>
         <Box>デバッグ(lastGSP): {debugInfo?.lastGSP ?? null}</Box>
         <Box>デバッグ(lastFetched): {debugInfo?.lastFetched ?? null}</Box>

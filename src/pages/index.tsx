@@ -63,7 +63,7 @@ export default AnimesPage;
 
 export const getStaticProps: GetStaticProps = async () => {
   const apiResult: ConvertedForMultiGraph = await fetch(
-    process.env.API_URL + `/vercelapp_v2-getConverted?limit=30`,
+    process.env.API_URL + `/apiv4_appv2-getConverted?limit=30`,
     {
       headers: {
         authorization: process.env.FUNCTION_AUTH ?? "",

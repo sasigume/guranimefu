@@ -1,10 +1,10 @@
-import { GetStaticProps } from "next";
-import ErrorPage from "next/error";
-import { Box } from "@chakra-ui/react";
+import { GetStaticProps } from 'next';
+import ErrorPage from 'next/error';
+import { Box } from '@chakra-ui/react';
 
-import { Layout } from "@/components/layout";
-import { AnimeForRss, AnimeForSingle } from "@/models/index";
-import AnimeSingle from "@/components/anime-single";
+import { Layout } from '@/components/layout';
+import { AnimeForRss, AnimeForSingle } from '@/models/index';
+import AnimeSingle from '@/components/anime-single';
 
 interface AnimeIDPageProps {
   anime: AnimeForSingle;
@@ -23,8 +23,8 @@ const AnimeIDPage = ({
     return (
       <>
         <Layout
-          title={anime.title_japanese + "の詳細情報"}
-          desc={anime.description ?? anime.title_japanese + "の詳細情報"}
+          title={anime.title_japanese + 'の詳細情報'}
+          desc={anime.description ?? anime.title_japanese + 'の詳細情報'}
           debugInfo={{
             lastGSP: lastGSP,
             lastFetched: fetchedTime,
@@ -45,7 +45,7 @@ const AnimeIDPage = ({
     );
   } else {
     return (
-      <Layout title={"404 Not found"} desc={""}>
+      <Layout title={'404 Not found'} desc={''}>
         <ErrorPage
           title="アニメの情報が見つかりませんでした"
           statusCode={404}
@@ -62,10 +62,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
   context.params ? (mal_id = context.params.id) : (mal_id = null);
 
   const apiResult: AnimeForSingle = await fetch(
-    process.env.API_URL + `/vercelapp_v2-getByIdConverted?mal_id=${mal_id}`,
+    process.env.API_URL + `/apiv4_appv2-getByIdConverted?mal_id=${mal_id}`,
     {
       headers: {
-        authorization: process.env.FUNCTION_AUTH ?? "",
+        authorization: process.env.FUNCTION_AUTH ?? '',
       },
     }
   )
@@ -74,7 +74,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     })
     .catch((e) => console.error(e));
 
-  let revalEnv = parseInt(process.env.REVALIDATE ?? "1800");
+  let revalEnv = parseInt(process.env.REVALIDATE ?? '1800');
   return {
     props: {
       fetchedTime: apiResult.lastFetched ?? null,
@@ -88,10 +88,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export async function getStaticPaths() {
   const apiResult: AnimeForRss[] = await fetch(
-    process.env.API_URL + `/vercelapp_v2-getRss`,
+    process.env.API_URL + `/apiv4_appv2-getRss`,
     {
       headers: {
-        authorization: process.env.FUNCTION_AUTH ?? "",
+        authorization: process.env.FUNCTION_AUTH ?? '',
       },
     }
   )

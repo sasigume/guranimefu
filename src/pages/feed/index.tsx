@@ -1,27 +1,27 @@
 // https://zenn.dev/catnose99/articles/c7754ba6e4adac
 
-import { SITE_DESC, SITE_FULL_URL, SITE_NAME } from "@/lib/constants";
-import { AnimeForRss } from "@/models/index";
-import { GetServerSidePropsContext } from "next";
-import RSS from "rss";
+import { SITE_DESC, SITE_FULL_URL, SITE_NAME } from '@/lib/constants';
+import { AnimeForRss } from '@/models/index';
+import { GetServerSidePropsContext } from 'next';
+import RSS from 'rss';
 
-const TOTAL_LIMIT = parseInt(process.env.TOTAL_PAGINATION ?? "600");
+const TOTAL_LIMIT = parseInt(process.env.TOTAL_PAGINATION ?? '600');
 
 async function generateFeedXml() {
   const feed = new RSS({
     title: SITE_NAME,
     description: SITE_DESC,
     site_url: SITE_FULL_URL,
-    feed_url: SITE_FULL_URL + "/feed",
-    language: "ja",
+    feed_url: SITE_FULL_URL + '/feed',
+    language: 'ja',
   });
 
   let allAnimesForRSS = [];
   const allAnimesForRSSRes = await fetch(
-    `${process.env.API_URL}/vercelapp_v2-getRss`,
+    `${process.env.API_URL}/apiv4_appv2-getRss`,
     {
       headers: {
-        authorization: process.env.FUNCTION_AUTH ?? "",
+        authorization: process.env.FUNCTION_AUTH ?? '',
       },
     }
   );
@@ -31,8 +31,8 @@ async function generateFeedXml() {
   allAnimesForRSS?.forEach((anime: AnimeForRss) => {
     feed.item({
       title: anime.title,
-      author: "MyAnimeList",
-      description: anime.description ?? "",
+      author: 'MyAnimeList',
+      description: anime.description ?? '',
       date: new Date(anime.lastFetched),
       url: `${process.env.HTTPS_URL}/animes/${anime.mal_id}`,
     });
@@ -49,10 +49,10 @@ export const getServerSideProps = async ({
 
   res.statusCode = 200;
   res.setHeader(
-    "Cache-Control",
+    'Cache-Control',
     `s-maxage=${revalidate}, stale-while-revalidate`
   );
-  res.setHeader("Content-Type", "text/xml");
+  res.setHeader('Content-Type', 'text/xml');
   res.end(xml);
 
   return {

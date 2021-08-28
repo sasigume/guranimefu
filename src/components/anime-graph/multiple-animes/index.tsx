@@ -1,4 +1,4 @@
-import { ConvertedForMultiGraph } from "@/models/index";
+import { ConvertedForMultiGraph } from '@/models/index';
 import {
   Badge,
   Box,
@@ -8,11 +8,11 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-} from "@chakra-ui/react";
-import { useMemo } from "react";
-import GraphWrapper from "../graph-wrapper";
-import NivoBump from "../nivo/nivo-bump";
-import NivoLine from "../nivo/nivo-line";
+} from '@chakra-ui/react';
+import { useMemo } from 'react';
+import GraphWrapper from '../graph-wrapper';
+import NivoBump from '../nivo/nivo-bump';
+import NivoLine from '../nivo/nivo-line';
 
 interface AnimeGraphProps {
   dataForGraph: ConvertedForMultiGraph;
@@ -67,6 +67,7 @@ const MultipleGraph = ({ dataForGraph, limit }: AnimeGraphProps) => {
     return (
       <Box id="a_graph" w="full">
         <Box>
+          <Box>2021/08/29: データをリセットして収集をやり直しました。</Box>
           <Badge>{length}日分のデータが見つかりました。</Badge>
           {limit && (
             <Badge colorScheme="red">

@@ -1,11 +1,11 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { Box, Heading, Stack } from "@chakra-ui/react";
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { Box, Heading, Stack } from '@chakra-ui/react';
 
-import { Layout } from "@/components/layout";
+import { Layout } from '@/components/layout';
 
-import { ConvertedForMultiGraph } from "@/models/index";
-import { SITE_DESC } from "@/lib/constants";
-import MultipleGraph from "@/components/anime-graph/multiple-animes";
+import { ConvertedForMultiGraph } from '@/models/index';
+import { SITE_DESC } from '@/lib/constants';
+import MultipleGraph from '@/components/anime-graph/multiple-animes';
 
 interface AnimesPageProps {
   data: ConvertedForMultiGraph;
@@ -48,12 +48,12 @@ export const getServerSideProps: GetServerSideProps = async ({
   query,
 }: GetServerSidePropsContext) => {
   const limitQuery = query.limit as string | undefined;
-  const limit = parseInt(limitQuery ?? "100");
+  const limit = parseInt(limitQuery ?? '100');
   const apiResult: ConvertedForMultiGraph = await fetch(
-    process.env.API_URL + `/vercelapp_v2-getConverted?limit=${limit}`,
+    process.env.API_URL + `/apiv4_appv2-getConverted?limit=${limit}`,
     {
       headers: {
-        authorization: process.env.FUNCTION_AUTH ?? "",
+        authorization: process.env.FUNCTION_AUTH ?? '',
       },
     }
   )
