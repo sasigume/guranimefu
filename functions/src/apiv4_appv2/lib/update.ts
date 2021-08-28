@@ -182,7 +182,7 @@ export const callApiPages = async () => {
       \n\n===
       \n\n## エラー内容
       \n\n${JSON.stringify(e, null, '\t')}`,
-        from: adminConfig.common.notice ?? 'cloudFunctions@aely.one',
+        from: adminConfig.common.notice ?? 'cloudFunctions@sasigu.me',
         fromName: 'Heroku jikan-firebase',
         to: adminConfig.common.notice ?? 'sasigume+cloudFunctionsFailed@gmail.com',
       };
