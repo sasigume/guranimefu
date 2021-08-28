@@ -11,21 +11,10 @@ interface LayoutProps {
   title: string;
   desc: string;
   children: ReactNode;
-  debugInfo?: {
-    lastGSP: string;
-    lastFetched: Date;
-    revalidate?: number;
-  };
   isIndex?: boolean;
 }
 
-export const Layout = ({
-  title,
-  desc,
-  children,
-  debugInfo,
-  isIndex,
-}: LayoutProps) => {
+export const Layout = ({ title, desc, children, isIndex }: LayoutProps) => {
   const { colorMode } = useColorMode();
 
   const bgColor = { light: 'gray.50', dark: 'gray.900' };
@@ -57,14 +46,7 @@ export const Layout = ({
       </Flex>
 
       <LayoutDrawer>
-        <Box>
-          デバッグ(revalidate): {debugInfo?.revalidate ?? 'ISRではありません'}
-        </Box>
-        <Box>デバッグ(lastGSP): {debugInfo?.lastGSP ?? null}</Box>
-        <Box>
-          デバッグ(lastFetched):{' '}
-          {JSON.stringify(debugInfo?.lastFetched) ?? null}
-        </Box>
+        <Box></Box>
       </LayoutDrawer>
 
       <CTA />

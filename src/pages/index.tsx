@@ -11,29 +11,12 @@ import SelectLimit from '@/components/gui/select-limit';
 
 interface AnimesPageProps {
   data: ConvertedForMultiGraph;
-  convertedTime: Date;
-  lastGSP: string;
-  revalEnv: number;
 }
 
-const AnimesPage = ({
-  data,
-  convertedTime,
-  lastGSP,
-  revalEnv,
-}: AnimesPageProps) => {
+const AnimesPage = ({ data }: AnimesPageProps) => {
   return (
     <>
-      <Layout
-        isIndex
-        title={SITE_NAME}
-        desc={SITE_DESC}
-        debugInfo={{
-          lastGSP: lastGSP,
-          lastFetched: convertedTime,
-          revalidate: revalEnv,
-        }}
-      >
+      <Layout isIndex title={SITE_NAME} desc={SITE_DESC}>
         <Stack spacing={12}>
           <Box>
             <Heading as="h2">読み込み件数を変更</Heading>

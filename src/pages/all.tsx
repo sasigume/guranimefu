@@ -9,28 +9,18 @@ import MultipleGraph from '@/components/anime-graph/multiple-animes';
 
 interface AnimesPageProps {
   data: ConvertedForMultiGraph;
-  convertedTime: Date;
-  lastGSP: string;
-  limit: number;
 }
 
-const ViewAll = ({ data, convertedTime, lastGSP, limit }: AnimesPageProps) => {
+const ViewAll = ({ data }: AnimesPageProps) => {
   return (
     <>
-      <Layout
-        title={`最大${limit}日分まで表示`}
-        desc={SITE_DESC}
-        debugInfo={{
-          lastGSP: lastGSP,
-          lastFetched: convertedTime,
-        }}
-      >
+      <Layout title={`全部表示`} desc={SITE_DESC}>
         <Stack spacing={12}>
-          <Heading>最大{limit}日分まで表示</Heading>
+          <Heading>全部</Heading>
           <Box>
             {data.byScore ? (
               <>
-                <MultipleGraph limit={limit} dataForGraph={data} />
+                <MultipleGraph limit={50} dataForGraph={data} />
               </>
             ) : (
               <Box>FAILED TO FETCH DATA</Box>

@@ -9,27 +9,17 @@ import AnimeSingle from '@/components/anime-single';
 interface AnimeIDPageProps {
   anime: AnimeForSingle;
   fetchedTime: string;
-  lastGSP: Date;
+  lastGSP: string;
   revalEnv: number;
 }
 
-const AnimeIDPage = ({
-  anime,
-  fetchedTime,
-  lastGSP,
-  revalEnv,
-}: AnimeIDPageProps) => {
+const AnimeIDPage = ({ anime }: AnimeIDPageProps) => {
   if (anime) {
     return (
       <>
         <Layout
           title={anime.title_japanese + 'の詳細情報'}
           desc={anime.description ?? anime.title_japanese + 'の詳細情報'}
-          debugInfo={{
-            lastGSP: lastGSP,
-            lastFetched: fetchedTime,
-            revalidate: revalEnv,
-          }}
         >
           <Box>
             {anime ? (
