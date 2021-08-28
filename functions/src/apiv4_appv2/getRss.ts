@@ -14,17 +14,8 @@ interface Message {
   message: string;
 }
 
-const getAnimesArray = async (mode: Subtype) => {
-  let order = 'rank';
-  if (mode == 'bypopularity') {
-    order = 'rankOfPopularity';
-  }
-  if (mode == 'byscore') {
-    order = 'rank';
-  }
-
-  const query = COLLECTION_APIV4_APPV2.orderBy(order).limit(50);
-
+const getAnimesArray = async () => {
+  const query = COLLECTION_APIV4_APPV2.orderBy('rank').limit(50);
   const snapshot = await query.get();
 
   return await Promise.all(
@@ -47,10 +38,9 @@ const getRss = functions
     }
 
     response.setHeader('Cache-Control', `public, s-maxage=3600, stale-while-revalidate=86400`);
-    const animes = await getAnimesArray('byscore');
+    const animes = await getAnimesArray();
     const results = {
       lastFetched: dayjs().toString(),
-      animesByPopularity: await getAnimesArray('bypopularity'),
       animesByScore: animes ?? [],
     };
 

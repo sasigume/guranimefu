@@ -15,15 +15,7 @@ interface Message {
 }
 
 const getAnimesArray = async (mode: Subtype) => {
-  let order = 'rank';
-  if (mode == 'bypopularity') {
-    order = 'rankOfPopularity';
-  }
-  if (mode == 'byscore') {
-    order = 'rank';
-  }
-
-  const query = COLLECTION_APIV4_APPV2.orderBy(order).limit(50);
+  const query = COLLECTION_APIV4_APPV2.orderBy('rank').limit(50);
 
   const snapshot = await query.get();
 
@@ -59,7 +51,6 @@ const getConverted = functions
 
     const results = {
       lastFetched: dayjs().toString(),
-      animesByPopularity: await getAnimesArray('bypopularity'),
       animesByScore: await getAnimesArray('byscore'),
     };
 
