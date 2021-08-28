@@ -1,4 +1,4 @@
-import { AnimeForGraph } from "@/models/index";
+import { AnimeForGraph } from '@/models/index';
 import {
   Box,
   SimpleGrid,
@@ -8,8 +8,8 @@ import {
   StatNumber,
   Stat,
   StatHelpText,
-} from "@chakra-ui/react";
-import LinkChakra from "../common/link-chakra";
+} from '@chakra-ui/react';
+import LinkChakra from '../common/link-chakra';
 
 interface AnimeGraphProps {
   animes: AnimeForGraph[];
@@ -24,7 +24,7 @@ const AnimeList = ({ animes }: AnimeGraphProps) => {
     return (
       <Stack
         id="a_list"
-        style={{ maxWidth: "100vw" }}
+        style={{ maxWidth: '100vw' }}
         overflowX="scroll"
         spacing={2}
       >
@@ -42,8 +42,8 @@ const AnimeList = ({ animes }: AnimeGraphProps) => {
                 <Flex h="full" position="relative" w="135px" key={anime.mal_id}>
                   <Box roundedTop="lg" overflow="hidden">
                     <img
-                      style={{ width: "135px", height: "auto" }}
-                      src={anime.image_url}
+                      style={{ width: '135px', height: 'auto' }}
+                      src={anime.images.jpg.image_url}
                     />
                   </Box>
                   <Box

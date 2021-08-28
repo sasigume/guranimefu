@@ -1,13 +1,13 @@
-import { GetStaticProps } from "next";
-import { Box, Divider, Heading, Stack } from "@chakra-ui/react";
+import { GetStaticProps } from 'next';
+import { Box, Divider, Heading, Stack } from '@chakra-ui/react';
 
-import { Layout } from "@/components/layout";
+import { Layout } from '@/components/layout';
 
-import { ConvertedForMultiGraph } from "@/models/index";
-import AnimeList from "@/components/anime-list";
-import { SITE_NAME, SITE_DESC } from "@/lib/constants";
-import MultipleGraph from "@/components/anime-graph/multiple-animes";
-import SelectLimit from "@/components/gui/select-limit";
+import { ConvertedForMultiGraph } from '@/models/index';
+import AnimeList from '@/components/anime-list';
+import { SITE_NAME, SITE_DESC } from '@/lib/constants';
+import MultipleGraph from '@/components/anime-graph/multiple-animes';
+import SelectLimit from '@/components/gui/select-limit';
 
 interface AnimesPageProps {
   data: ConvertedForMultiGraph;
@@ -41,7 +41,7 @@ const AnimesPage = ({
           </Box>
           <Stack spacing={6}>
             <Heading as="h2">最新のデータ</Heading>
-            {data.byScore && data.byPopularity ? (
+            {data.byScore ? (
               <>
                 <MultipleGraph dataForGraph={data} />
 
@@ -66,7 +66,7 @@ export const getStaticProps: GetStaticProps = async () => {
     process.env.API_URL + `/apiv4_appv2-getConverted?limit=30`,
     {
       headers: {
-        authorization: process.env.FUNCTION_AUTH ?? "",
+        authorization: process.env.FUNCTION_AUTH ?? '',
       },
     }
   )
@@ -75,7 +75,7 @@ export const getStaticProps: GetStaticProps = async () => {
     })
     .catch((e) => console.error(e));
 
-  let revalEnv = parseInt(process.env.REVALIDATE ?? "1800");
+  let revalEnv = parseInt(process.env.REVALIDATE ?? '1800');
   return {
     props: {
       convertedTime: apiResult.lastConverted ?? null,

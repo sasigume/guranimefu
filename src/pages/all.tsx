@@ -28,7 +28,7 @@ const ViewAll = ({ data, convertedTime, lastGSP, limit }: AnimesPageProps) => {
         <Stack spacing={12}>
           <Heading>最大{limit}日分まで表示</Heading>
           <Box>
-            {data.byScore && data.byPopularity ? (
+            {data.byScore ? (
               <>
                 <MultipleGraph limit={limit} dataForGraph={data} />
               </>
