@@ -1,7 +1,7 @@
 import { SITE_DESC, SITE_NAME } from '@/lib/constants';
 import { Flex, Heading, Box } from '@chakra-ui/react';
 import LinkChakra from '../common/link-chakra';
-import Logo from '../common/logo';
+import Logo from '../common/Logo';
 
 export const Hero = () => (
   <Flex
